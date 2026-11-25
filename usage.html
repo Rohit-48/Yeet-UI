@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Usage ✦ yeet/ui</title>
+  <meta property="og:title" content="Usage ✦ yeet/ui" />
+<!-- @include head -->
+</head>
+<body class="page-usage">
+<!-- @include nav -->
+
+  <header class="ph" style="--ph:var(--y-lime);--ph2:var(--y-mint);--ph3:var(--y-yellow)">
+    <div class="ph__bg"></div>
+    <img class="ph__prop" src="/src/assets/props/smiley.svg" alt="" style="--x:79%;--y:18%;--s:150px" />
+    <img class="ph__prop" src="/src/assets/props/squiggle.svg" alt="" style="--x:66%;--y:60%;--s:130px" />
+    <img class="ph__prop" src="/src/assets/props/sparkle.svg" alt="" style="--x:92%;--y:64%;--s:50px" />
+    <div class="ph__inner">
+      <div class="ph__crumbs"><a href="/">home</a><span>/</span><b>usage</b></div>
+      <h1 class="ph__title">Usage</h1>
+      <p class="ph__sub">From zero to shipped in four steps. No framework, no build drama. Then remix the theme for each client.</p>
+      <div class="ph__meta">
+        <span class="y-badge" style="--bg:var(--y-white)">~2 min setup</span>
+        <span class="y-badge" style="--bg:var(--y-yellow)">1 dependency (gsap)</span>
+        <span class="y-badge y-badge--dot" style="--bg:var(--y-mint)">works anywhere</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Usage sections">
+    <div class="subnav__inner">
+      <span class="subnav__pill" aria-hidden="true"></span>
+      <a href="#steps">🪜 Install</a><a href="#remix">🎛️ Theme remix</a><a href="#recipes">🍳 Recipes</a><a href="#rules">✅ Rules</a><a href="#faq">❓ FAQ</a>
+    </div>
+  </nav>
+
+  <!-- ===== STEPS ===== -->
+  <section class="sec" id="steps">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">01 · install</span><h2 class="big-title">Four steps <span class="scribble">to shipped</span></h2></div>
+      <p>Copy three files, add GSAP, call one function. That's the whole ceremony.</p>
+    </div>
+    <ol class="steps">
+      <span class="steps__line" aria-hidden="true"><i></i></span>
+      <li class="step" style="--c:var(--y-lime)">
+        <span class="step__n">1</span>
+        <div class="step__body">
+          <h3>Copy the library into your project</h3>
+          <p>Three files are the whole library. The showcase site files stay behind.</p>
+          <div class="tree">
+<b>my-site/</b>
+├─ index.html
+└─ ui/
+   ├─ <i>tokens.css</i>      <small>colors, type, shape, motion</small>
+   ├─ <i>components.css</i>  <small>every .y-* class</small>
+   ├─ <i>components.js</i>   <small>behaviours + yeet.init()</small>
+   └─ <i>search.js</i>       <small>only if you use ⌘K search</small></div>
+        </div>
+      </li>
+      <li class="step" style="--c:var(--y-pink)">
+        <span class="step__n">2</span>
+        <div class="step__body">
+          <h3>Add GSAP and the fonts</h3>
+          <p>GSAP powers the motion. The fonts are optional but they're the whole vibe.</p>
+          <div class="codeblock" data-code="sh"><div class="codeblock__label"><span>terminal</span><button data-copy-code>copy</button></div><pre><code>npm i gsap</code></pre></div>
+          <div class="codeblock" data-code="html"><div class="codeblock__label"><span>&lt;head&gt;</span><button data-copy-code>copy</button></div><pre><code>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" /&gt;
+&lt;link rel="stylesheet" href="/ui/tokens.css" /&gt;
+&lt;link rel="stylesheet" href="/ui/components.css" /&gt;</code></pre></div>
+        </div>
+      </li>
+      <li class="step" style="--c:var(--y-yellow)">
+        <span class="step__n">3</span>
+        <div class="step__body">
+          <h3>Wake the components up</h3>
+          <p>One call wires up tabs, accordions, modals, toasts, tilt, magnetic, marquee and the navbar.</p>
+          <div class="codeblock" data-code="js"><div class="codeblock__label"><span>main.js</span><button data-copy-code>copy</button></div><pre><code>import { yeet } from "./ui/components.js";
+
+yeet.init();
+// optional: global ⌘K search
+yeet.search({ items: [{ title: "Pricing", href: "#pricing", emoji: "💸" }] });</code></pre></div>
+        </div>
+      </li>
+      <li class="step" style="--c:var(--y-mint)">
+        <span class="step__n">4</span>
+        <div class="step__body">
+          <h3>Drop in markup. Ship it.</h3>
+          <p>Grab any snippet from the <a href="/docs.html">docs</a>. This one's live, go on, press it.</p>
+          <div class="step__split">
+            <div class="codeblock" data-code="html"><div class="codeblock__label"><span>index.html</span><button data-copy-code>copy</button></div><pre><code>&lt;button class="y-btn y-btn--pink"
+  data-toast="Shipped! 🚀"
+  data-toast-bg="var(--y-lime)"&gt;
+  Ship it
+&lt;/button&gt;</code></pre></div>
+            <div class="step__live"><button class="y-btn y-btn--pink y-btn--lg" data-toast="Shipped! You ate that." data-toast-emoji="🚀" data-toast-bg="var(--y-lime)">Ship it</button></div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ===== REMIX ===== -->
+  <section class="sec" id="remix">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">02 · theming</span><h2 class="big-title">Theme <span class="scribble">remix</span></h2></div>
+      <p>Every client gets their own flavour. Tweak the knobs, copy the overrides, paste after tokens.css.</p>
+    </div>
+    <div class="remix" data-reveal>
+      <div class="remix__controls">
+        <div class="ctl"><span class="ctl__label">Accent</span><div class="ctl__swatches" id="accents"></div></div>
+        <div class="ctl"><span class="ctl__label">Pop color</span><div class="ctl__swatches" id="pops"></div></div>
+        <label class="ctl"><span class="ctl__label">Corner radius <b id="rOut">16px</b></span><input class="y-range" type="range" min="0" max="32" value="16" id="rIn" /></label>
+        <label class="ctl"><span class="ctl__label">Shadow depth <b id="sOut">5px</b></span><input class="y-range" type="range" min="0" max="12" value="5" id="sIn" /></label>
+        <label class="ctl"><span class="ctl__label">Border <b id="bOut">2.5px</b></span><input class="y-range" type="range" min="1" max="5" step="0.5" value="2.5" id="bIn" /></label>
+        <div class="ctl ctl--row">
+          <button class="y-btn y-btn--sm y-btn--ghost" type="button" id="randomize">🎲 Randomize</button>
+          <button class="y-btn y-btn--sm y-btn--ghost" type="button" id="resetTheme">↺ Reset</button>
+        </div>
+      </div>
+      <div class="remix__out">
+        <div class="remix__preview" id="remixPreview">
+          <nav class="y-nav"><span class="y-nav__logo"><span class="y-nav__mark"><span class="y-nav__glyph">✦</span></span><span>client<em>/</em>co</span></span><span class="y-btn y-btn--sm y-btn--pink">Book a call</span></nav>
+          <div class="remix__row">
+            <article class="y-card">
+              <span class="y-badge y-card__sticker">NEW</span>
+              <span class="y-card__emoji">🧃</span>
+              <h3 class="y-card__title">Juice drop</h3>
+              <p class="y-card__body">Your theme, live. Every token flows through.</p>
+            </article>
+            <div class="remix__stack">
+              <button class="y-btn" type="button">Primary</button>
+              <button class="y-btn y-btn--pink" type="button">Pop</button>
+              <input class="y-input" placeholder="you@client.co" />
+              <label class="y-toggle"><input type="checkbox" checked /><span class="y-toggle__track"><span class="y-toggle__thumb"></span></span>Vibes on</label>
+            </div>
+          </div>
+        </div>
+        <div class="codeblock"><div class="codeblock__label"><span>theme.css — paste after tokens.css</span><button id="copyTheme">copy</button></div><pre><code id="themeCode"></code></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RECIPES ===== -->
+  <section class="sec" id="recipes">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">03 · recipes</span><h2 class="big-title">Works with <span class="scribble">whatever</span></h2></div>
+      <p>It's just classes and one init call, so it slots into any stack.</p>
+    </div>
+    <div class="y-tabs recipes" data-tabs data-reveal>
+      <div class="y-tabs__list" role="tablist">
+        <span class="y-tabs__pill"></span>
+        <button class="y-tabs__tab" role="tab" aria-selected="true">Plain HTML</button>
+        <button class="y-tabs__tab" role="tab" aria-selected="false">React</button>
+        <button class="y-tabs__tab" role="tab" aria-selected="false">Vue</button>
+        <button class="y-tabs__tab" role="tab" aria-selected="false">Astro</button>
+      </div>
+      <div class="y-tabs__panel" role="tabpanel"><div class="codeblock" data-code="html"><div class="codeblock__label"><span>index.html</span><button data-copy-code>copy</button></div><pre><code>&lt;script type="module"&gt;
+  import { yeet } from "/ui/components.js";
+  yeet.init();
+&lt;/script&gt;</code></pre></div></div>
+      <div class="y-tabs__panel" role="tabpanel" hidden><div class="codeblock" data-code="js"><div class="codeblock__label"><span>App.jsx</span><button data-copy-code>copy</button></div><pre><code>import { useEffect, useRef } from "react";
+import { yeet } from "./ui/components.js";
+
+export default function App() {
+  const root = useRef(null);
+  // init after render, scoped to this tree
+  useEffect(() => { yeet.init(root.current); }, []);
+  return (
+    &lt;main ref={root}&gt;
+      &lt;button className="y-btn y-btn--pink" data-toast="hi from react"&gt;Toast&lt;/button&gt;
+    &lt;/main&gt;
+  );
+}</code></pre></div></div>
+      <div class="y-tabs__panel" role="tabpanel" hidden><div class="codeblock" data-code="js"><div class="codeblock__label"><span>App.vue</span><button data-copy-code>copy</button></div><pre><code>&lt;script setup&gt;
+import { onMounted, ref } from "vue";
+import { yeet } from "./ui/components.js";
+const root = ref(null);
+onMounted(() =&gt; yeet.init(root.value));
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;main ref="root"&gt;&lt;button class="y-btn"&gt;Vue but loud&lt;/button&gt;&lt;/main&gt;
+&lt;/template&gt;</code></pre></div></div>
+      <div class="y-tabs__panel" role="tabpanel" hidden><div class="codeblock" data-code="html"><div class="codeblock__label"><span>Layout.astro</span><button data-copy-code>copy</button></div><pre><code>---
+import "../ui/tokens.css";
+import "../ui/components.css";
+---
+&lt;slot /&gt;
+&lt;script&gt;
+  import { yeet } from "../ui/components.js";
+  yeet.init();
+&lt;/script&gt;</code></pre></div></div>
+    </div>
+  </section>
+
+  <!-- ===== RULES ===== -->
+  <section class="sec" id="rules">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">04 · house rules</span><h2 class="big-title">Do this, <span class="scribble">not that</span></h2></div>
+    </div>
+    <div class="rules" data-reveal="stagger">
+      <div class="rule rule--do"><span>✅</span><b>Override tokens, not components</b><p>Change <code>--y-lime</code> once instead of restyling every button.</p></div>
+      <div class="rule rule--dont"><span>🚫</span><b>Stack 5 accent colors in one view</b><p>Pick one hero accent plus one pop. Loud ≠ chaotic.</p></div>
+      <div class="rule rule--do"><span>✅</span><b>Keep the ink outlines</b><p>The 2.5px border + hard shadow is the signature. Thinner is fine, none is not.</p></div>
+      <div class="rule rule--dont"><span>🚫</span><b>Animate everything at once</b><p>Motion should guide. Let one thing pop per moment.</p></div>
+      <div class="rule rule--do"><span>✅</span><b>Respect reduced motion</b><p>It's built in. Don't add animations that ignore it.</p></div>
+      <div class="rule rule--dont"><span>🚫</span><b>Put grey text on lime</b><p>Use ink on bright colors. Contrast is part of the vibe.</p></div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="sec" id="faq">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">05 · faq</span><h2 class="big-title">Questions, <span class="scribble">answered</span></h2></div>
+    </div>
+    <div class="y-accordion faq" data-accordion data-reveal="stagger">
+      <div class="y-accordion__item"><button class="y-accordion__trigger" aria-expanded="false">Do I need React / a framework? <span class="y-accordion__icon">+</span></button><div class="y-accordion__panel"><div class="y-accordion__inner">Nope. It's plain HTML classes plus one JS init. Frameworks work too, see the recipes.</div></div></div>
+      <div class="y-accordion__item"><button class="y-accordion__trigger" aria-expanded="false">How do I add a component after page load? <span class="y-accordion__icon">+</span></button><div class="y-accordion__panel"><div class="y-accordion__inner">Call <code>yeet.init(container)</code> on the new element. Only that subtree gets wired up.</div></div></div>
+      <div class="y-accordion__item"><button class="y-accordion__trigger" aria-expanded="false">Is it accessible? <span class="y-accordion__icon">+</span></button><div class="y-accordion__panel"><div class="y-accordion__inner">Native inputs under the toggles and checkboxes, ARIA on tabs, accordion and modal, keyboard support for tabs and search, and every animation respects prefers-reduced-motion.</div></div></div>
+      <div class="y-accordion__item"><button class="y-accordion__trigger" aria-expanded="false">Can each client site look different? <span class="y-accordion__icon">+</span></button><div class="y-accordion__panel"><div class="y-accordion__inner">Yes, that's what the theme remix is for. Ship a small theme.css with token overrides per client.</div></div></div>
+      <div class="y-accordion__item"><button class="y-accordion__trigger" aria-expanded="false">How heavy is it? <span class="y-accordion__icon">+</span></button><div class="y-accordion__panel"><div class="y-accordion__inner">The CSS is small. GSAP is the main weight; if a site doesn't need motion, you can skip components.js and still use every style.</div></div></div>
+    </div>
+  </section>
+
+<!-- @include footer -->
+<!-- @include overlays -->
+  <script type="module" src="/src/pages/usage-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>yeet/ui ✦ components that slay</title>
+  <meta property="og:title" content="yeet/ui ✦ components that slay" />
+<!-- @include head -->
+</head>
+<body class="page-home">
+<!-- @include nav -->
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <!-- hero background: gradient mesh + grain + SVG props (src/assets/props). Fades into the page on scroll. -->
+    <div class="hero__bg" aria-hidden="true">
+      <div class="hero__mesh"><i class="m1"></i><i class="m2"></i><i class="m3"></i><i class="m4"></i><i class="m5"></i></div>
+      <div class="hero__grain"></div>
+      <span class="prop" data-depth="0.5"  style="--x:5%;--y:17%;--s:150px"><img src="/src/assets/props/sphere.svg" alt="" /></span>
+      <span class="prop" data-depth="0.85" style="--x:83%;--y:13%;--s:140px"><img src="/src/assets/props/star.svg" alt="" /></span>
+      <span class="prop" data-depth="0.4"  style="--x:86%;--y:54%;--s:170px"><img src="/src/assets/props/ring.svg" alt="" /></span>
+      <span class="prop" data-depth="0.95" style="--x:9%;--y:68%;--s:125px"><img src="/src/assets/props/smiley.svg" alt="" /></span>
+      <span class="prop" data-depth="1.15" style="--x:27%;--y:9%;--s:84px"><img src="/src/assets/props/bolt.svg" alt="" /></span>
+      <span class="prop" data-depth="0.7"  style="--x:73%;--y:80%;--s:120px"><img src="/src/assets/props/pill.svg" alt="" /></span>
+      <span class="prop" data-depth="0.3"  style="--x:-1%;--y:45%;--s:130px"><img src="/src/assets/props/squiggle.svg" alt="" /></span>
+      <span class="prop" data-depth="0.6"  style="--x:24%;--y:80%;--s:110px"><img src="/src/assets/props/cube.svg" alt="" /></span>
+      <span class="prop" data-depth="0.8"  style="--x:64%;--y:6%;--s:78px"><img src="/src/assets/props/heart.svg" alt="" /></span>
+      <span class="prop" data-depth="1.35" style="--x:19%;--y:34%;--s:52px"><img src="/src/assets/props/sparkle.svg" alt="" /></span>
+      <span class="prop" data-depth="1.5"  style="--x:77%;--y:40%;--s:44px"><img src="/src/assets/props/sparkle.svg" alt="" /></span>
+      <span class="prop" data-depth="1.2"  style="--x:50%;--y:88%;--s:36px"><img src="/src/assets/props/sparkle.svg" alt="" /></span>
+    </div>
+
+    <div>
+      <div class="hero__kicker"><span class="y-badge y-badge--dot y-badge--tilt" style="--bg:var(--y-lime)">v0.1 just dropped</span></div>
+      <h1 class="hero__title">
+        <span class="line" data-split>components</span>
+        <span class="line" data-split>that <span class="hl">slay</span></span>
+      </h1>
+      <p class="hero__sub">Our in-house component library. Loud colors, chunky borders, buttery GSAP motion. Copy, paste, ship. No cap.</p>
+      <div class="hero__ctas">
+        <a href="/components.html" class="y-btn y-btn--lg" data-magnetic>Browse the drip 👀</a>
+        <a href="/docs.html" class="y-btn y-btn--ghost y-btn--lg">Read the docs</a>
+      </div>
+      <div class="hero__stats">
+        <div class="stat"><b data-count="0" id="statComponents">0</b><small>components</small></div>
+        <div class="stat"><b data-count="11">0</b><small>colors</small></div>
+        <div class="stat"><b data-count="100">0</b><small>% vibes</small></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="y-marquee" data-marquee style="--bg:var(--y-ink);--fg:var(--y-lime)">
+    <div class="y-marquee__track">
+      <span class="y-marquee__item">buttons ✦</span><span class="y-marquee__item">cards ✦</span><span class="y-marquee__item">modals ✦</span><span class="y-marquee__item">toasts ✦</span><span class="y-marquee__item">tabs ✦</span><span class="y-marquee__item">toggles ✦</span><span class="y-marquee__item">it's giving ui ✦</span>
+    </div>
+  </div>
+  <div class="y-marquee" data-marquee data-reverse style="--bg:var(--y-pink);--fg:var(--y-ink);transform:rotate(-1.5deg);margin-top:-6px">
+    <div class="y-marquee__track">
+      <span class="y-marquee__item">copy ★ paste ★ ship ★</span><span class="y-marquee__item">main character energy ★</span><span class="y-marquee__item">zero boring pixels ★</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE PREVIEWS ================= -->
+  <section class="sec" id="explore">
+    <div class="sec__head" data-reveal>
+      <div>
+        <span class="eyebrow">the whole kit</span>
+        <h2 class="big-title">Everything, <span class="scribble">one click</span> away</h2>
+      </div>
+      <p>Four pages, zero fluff. Peek inside, then dive in.</p>
+    </div>
+    <div class="pvgrid">
+      <a class="pv pv--components" href="/components.html" style="--pv:var(--y-yellow)">
+        <div class="pv__top"><span class="pv__num">01</span><b class="pv__name">Components</b><span class="pv__go" aria-hidden="true">↗</span></div>
+        <div class="pv__stage" inert><div class="pvc" id="pvComponents"></div></div>
+        <p class="pv__desc"><b data-count-components>0</b> components, filterable by vibe. Hover to shuffle.</p>
+      </a>
+      <a class="pv pv--docs" href="/docs.html" style="--pv:var(--y-blue)">
+        <div class="pv__top"><span class="pv__num">02</span><b class="pv__name">Docs</b><span class="pv__go" aria-hidden="true">↗</span></div>
+        <div class="pv__stage" inert>
+          <div class="pvd">
+            <div class="pvd__bar"><span class="pvd__seg"><i class="pvd__pill"></i><em>Preview</em><em>Code</em></span><span class="pvd__dots"><i></i><i></i><i></i></span></div>
+            <div class="pvd__body">
+              <div class="pvd__preview"><span class="y-btn y-btn--sm">Primary</span><span class="y-btn y-btn--sm y-btn--pink">Pink</span><span class="y-btn y-btn--sm y-btn--ink">Dark</span><span class="y-badge" style="--bg:var(--y-lime)">Live</span><span class="y-toggle"><span class="y-toggle__track" style="background:var(--y-lime)"><span class="y-toggle__thumb" style="transform:translateX(28px)"></span></span></span></div>
+              <div class="pvd__code"><i style="--w:70%;--c:var(--y-pink)"></i><i style="--w:45%;--c:var(--y-lime)"></i><i style="--w:85%;--c:var(--y-yellow)"></i><i style="--w:35%;--c:var(--y-pink)"></i><i style="--w:60%;--c:var(--y-mint)"></i><i style="--w:50%;--c:var(--y-lime)"></i></div>
+            </div>
+          </div>
+          <div class="pvd__api"><span>⚙️ API</span><i></i><i></i><i></i></div>
+        </div>
+        <p class="pv__desc">Live previews, copy-paste code and an API table for every single one.</p>
+      </a>
+      <a class="pv pv--tokens" href="/tokens.html" style="--pv:var(--y-pink)">
+        <div class="pv__top"><span class="pv__num">03</span><b class="pv__name">Tokens</b><span class="pv__go" aria-hidden="true">↗</span></div>
+        <div class="pv__stage" inert>
+          <div class="pvt">
+            <div class="pvt__fan" id="pvFan"></div>
+            <div class="pvt__type"><b>Aa</b><span>Bricolage<br/>Grotesque</span></div>
+          </div>
+        </div>
+        <p class="pv__desc">Colors, type, radius, shadows, motion. The raw ingredients.</p>
+      </a>
+      <a class="pv pv--usage" href="/usage.html" style="--pv:var(--y-lime)">
+        <div class="pv__top"><span class="pv__num">04</span><b class="pv__name">Usage</b><span class="pv__go" aria-hidden="true">↗</span></div>
+        <div class="pv__stage" inert>
+          <div class="pvu">
+            <div class="pvu__bar"><i></i><i></i><i></i><span>~/my-site</span></div>
+            <pre class="pvu__term" id="pvTerm"></pre>
+          </div>
+        </div>
+        <p class="pv__desc">4 steps to shipped, plus a theme remixer and framework recipes.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= COMPONENT REEL ================= -->
+  <section class="reel" id="reel">
+    <div class="reel__head">
+      <span class="eyebrow">scroll sideways, bestie</span>
+      <h2 class="big-title">The lineup <span class="scribble">on a reel</span></h2>
+    </div>
+    <div class="reel__track" id="reelTrack"></div>
+  </section>
+
+<!-- @include footer -->
+<!-- @include overlays -->
+  <script type="module" src="/src/pages/home.js"></script>
+</body>
+</html>

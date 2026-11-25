@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Components ✦ yeet/ui</title>
+  <meta property="og:title" content="Components ✦ yeet/ui" />
+<!-- @include head -->
+</head>
+<body class="page-components">
+<!-- @include nav -->
+
+  <header class="ph" style="--ph:var(--y-yellow);--ph2:var(--y-lime);--ph3:var(--y-pink)">
+    <div class="ph__bg"></div>
+    <img class="ph__prop" src="/src/assets/props/cube.svg" alt="" style="--x:78%;--y:22%;--s:170px" />
+    <img class="ph__prop" src="/src/assets/props/star.svg" alt="" style="--x:66%;--y:60%;--s:110px" />
+    <img class="ph__prop" src="/src/assets/props/sparkle.svg" alt="" style="--x:90%;--y:66%;--s:60px" />
+    <div class="ph__inner">
+      <div class="ph__crumbs"><a href="/">home</a><span>/</span><b>components</b></div>
+      <h1 class="ph__title">Components</h1>
+      <p class="ph__sub">The full lineup. Filter by vibe, search by name, click any card for live demos, code and the API.</p>
+      <div class="ph__meta">
+        <span class="y-badge" style="--bg:var(--y-lime)"><b data-total>0</b>&nbsp;components</span>
+        <span class="y-badge" style="--bg:var(--y-white)"><b data-cats>0</b>&nbsp;categories</span>
+        <span class="y-badge y-badge--dot" style="--bg:var(--y-mint)">all interactive</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec cpage">
+    <div class="cbar">
+      <div class="filters" id="filters" role="toolbar" aria-label="Filter by category"></div>
+      <label class="search cbar__search">
+        <span aria-hidden="true">🔍</span>
+        <input id="filter" type="search" placeholder="Filter by name" autocomplete="off" />
+        <span class="cbar__count" id="count"></span>
+      </label>
+    </div>
+    <div class="bento" id="bento"></div>
+    <div class="cempty" id="cempty" hidden><span>🫠</span><b>Nothing matches that.</b><button class="y-btn y-btn--sm" type="button" id="reset">Reset filters</button></div>
+  </section>
+
+<!-- @include footer -->
+<!-- @include overlays -->
+  <script type="module" src="/src/pages/components-page.js"></script>
+</body>
+</html>

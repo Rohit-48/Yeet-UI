@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Tokens ✦ yeet/ui</title>
+  <meta property="og:title" content="Tokens ✦ yeet/ui" />
+<!-- @include head -->
+</head>
+<body class="page-tokens">
+<!-- @include nav -->
+
+  <header class="ph" style="--ph:var(--y-pink);--ph2:var(--y-orange);--ph3:var(--y-purple)">
+    <div class="ph__bg"></div>
+    <img class="ph__prop" src="/src/assets/props/heart.svg" alt="" style="--x:80%;--y:20%;--s:140px" />
+    <img class="ph__prop" src="/src/assets/props/pill.svg" alt="" style="--x:68%;--y:58%;--s:120px" />
+    <img class="ph__prop" src="/src/assets/props/sparkle.svg" alt="" style="--x:91%;--y:62%;--s:56px" />
+    <div class="ph__inner">
+      <div class="ph__crumbs"><a href="/">home</a><span>/</span><b>tokens</b></div>
+      <h1 class="ph__title">Tokens</h1>
+      <p class="ph__sub">The raw ingredients behind every component. Change them once in <code>tokens.css</code>, and everything follows.</p>
+      <div class="ph__meta">
+        <button class="y-btn" type="button" id="copyTokens">Copy tokens.css 📋</button>
+        <a class="y-btn y-btn--ghost" href="#file">View the file ↓</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Token sections">
+    <div class="subnav__inner">
+      <span class="subnav__pill" aria-hidden="true"></span>
+      <a href="#colors">🎨 Colors</a><a href="#type">🔤 Type</a><a href="#shape">⬜ Shape</a><a href="#shadows">🌘 Shadows</a><a href="#motion">🌀 Motion</a><a href="#file">📄 File</a>
+    </div>
+  </nav>
+
+  <section class="sec tk" id="colors">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">01 · color</span><h2 class="big-title">Colors that <span class="scribble">scream</span></h2></div>
+      <p>Hover the strip, click any swatch to copy its variable.</p>
+    </div>
+    <div class="strip" id="strip"></div>
+    <div class="swgrid" id="swgrid"></div>
+  </section>
+
+  <section class="sec tk" id="type">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">02 · typography</span><h2 class="big-title">Three fonts, <span class="scribble">zero beige</span></h2></div>
+      <p>A chunky display face, a quirky readable body, and a mono for code.</p>
+    </div>
+    <div class="fonts" data-reveal="stagger">
+      <article class="font" style="--f:var(--y-font-display);--c:var(--y-lime)"><b class="font__aa">Aa</b><div><h3>Bricolage Grotesque</h3><p>--y-font-display · 600 / 800 · headings, numbers, wordmarks</p></div><p class="font__abc">ABCDEFGHIJKLM<br/>nopqrstuvwxyz 0123456789</p></article>
+      <article class="font" style="--f:var(--y-font-body);--c:var(--y-pink)"><b class="font__aa">Aa</b><div><h3>Space Grotesk</h3><p>--y-font-body · 500 / 600 / 700 · body copy, UI labels</p></div><p class="font__abc">ABCDEFGHIJKLM<br/>nopqrstuvwxyz 0123456789</p></article>
+      <article class="font" style="--f:var(--y-font-mono);--c:var(--y-yellow)"><b class="font__aa">Aa</b><div><h3>JetBrains Mono</h3><p>--y-font-mono · 500 / 700 · code, tags, eyebrows</p></div><p class="font__abc">ABCDEFGHIJKLM<br/>nopqrstuvwxyz 0123456789</p></article>
+    </div>
+    <div class="scale" id="scale"></div>
+  </section>
+
+  <section class="sec tk" id="shape">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">03 · shape</span><h2 class="big-title">Round-ish, <span class="scribble">thick-lined</span></h2></div>
+      <p>Four radii and one border to rule them all.</p>
+    </div>
+    <div class="radii" id="radii" data-reveal="stagger"></div>
+  </section>
+
+  <section class="sec tk" id="shadows">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">04 · depth</span><h2 class="big-title">Hard shadows, <span class="scribble">no blur</span></h2></div>
+      <p>Press them. They squish, like the buttons.</p>
+    </div>
+    <div class="shadows" id="shadows-grid" data-reveal="stagger"></div>
+  </section>
+
+  <section class="sec tk" id="motion">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">05 · motion</span><h2 class="big-title">Eases with <span class="scribble">personality</span></h2></div>
+      <button class="y-btn y-btn--pink" type="button" id="playAll">▶ Play all</button>
+    </div>
+    <div class="eases" id="eases"></div>
+  </section>
+
+  <section class="sec tk" id="file">
+    <div class="sec__head" data-reveal>
+      <div><span class="eyebrow">06 · source</span><h2 class="big-title">tokens.css</h2></div>
+      <button class="y-btn" type="button" data-copy-file>Copy file 📋</button>
+    </div>
+    <div class="filebox" data-reveal><div class="codeblock"><div class="codeblock__label"><span>src/styles/tokens.css</span></div><pre><code id="tokensFile"></code></pre></div></div>
+  </section>
+
+<!-- @include footer -->
+<!-- @include overlays -->
+  <script type="module" src="/src/pages/tokens-page.js"></script>
+</body>
+</html>

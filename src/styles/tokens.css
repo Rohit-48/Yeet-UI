@@ -1,0 +1,39 @@
+/* ============================================
+   YEET/UI — design tokens
+   Drop this + components.css into any project.
+   ============================================ */
+:root {
+  /* palette */
+  --y-ink: #111014;
+  --y-paper: #fff8ec;
+  --y-white: #ffffff;
+  --y-lime: #c6ff3d;
+  --y-pink: #ff4fd8;
+  --y-blue: #3d5afe;
+  --y-orange: #ff7a1a;
+  --y-purple: #9b5cff;
+  --y-yellow: #ffe14d;
+  --y-mint: #3dffc5;
+  --y-muted: #6b6672;
+
+  /* type */
+  --y-font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --y-font-body: "Space Grotesk", system-ui, sans-serif;
+  --y-font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* shape */
+  --y-border: 2.5px solid var(--y-ink);
+  --y-radius-sm: 10px;
+  --y-radius: 16px;
+  --y-radius-lg: 28px;
+  --y-radius-pill: 999px;
+
+  /* hard offset shadows */
+  --y-shadow-sm: 3px 3px 0 var(--y-ink);
+  --y-shadow: 5px 5px 0 var(--y-ink);
+  --y-shadow-lg: 8px 8px 0 var(--y-ink);
+
+  /* motion */
+  --y-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --y-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

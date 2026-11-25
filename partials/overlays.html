@@ -1,0 +1,14 @@
+  <!-- shared modal + toaster -->
+  <div class="y-modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+    <div class="y-modal__backdrop" data-modal-close></div>
+    <div class="y-modal__dialog">
+      <span class="y-modal__emoji">🥳</span>
+      <h3 id="demoModalTitle">You opened a modal!</h3>
+      <p>Bouncy, blurry, and it closes when you hit Esc. Main character behaviour.</p>
+      <div class="y-modal__actions">
+        <button class="y-btn y-btn--ghost" data-modal-close>Nah</button>
+        <button class="y-btn y-btn--pink" data-modal-close data-toast="Bet. Let's go!" data-toast-emoji="🚀" data-toast-bg="var(--y-lime)">Let's gooo</button>
+      </div>
+    </div>
+  </div>
+  <div class="y-toaster" aria-live="polite"></div>

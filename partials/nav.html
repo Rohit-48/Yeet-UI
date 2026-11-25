@@ -1,0 +1,43 @@
+  <div class="pt" aria-hidden="true">
+    <i class="pt__bar" style="--c:#c6ff3d"></i><i class="pt__bar" style="--c:#ff4fd8"></i><i class="pt__bar" style="--c:#ffe14d"></i><i class="pt__bar" style="--c:#3d5afe"></i><i class="pt__bar" style="--c:#111014"></i>
+    <div class="pt__label">
+      <svg class="pt__mark" viewBox="0 0 64 64"><rect x="9" y="9" width="52" height="52" rx="15" fill="#ff4fd8"/><rect x="3" y="3" width="52" height="52" rx="15" fill="#c6ff3d" stroke="#111014" stroke-width="4.5"/><polygon class="pt__spark" points="29,10 32.7,25.3 48,29 32.7,32.7 29,48 25.3,32.7 10,29 25.3,25.3" fill="#111014" stroke="#111014" stroke-width="2.5" stroke-linejoin="round"/><circle cx="44" cy="15" r="3.2" fill="#fff" stroke="#111014" stroke-width="2"/></svg>
+      <b class="pt__name">yeet/ui</b>
+      <span class="pt__meter"><i></i></span>
+      <small class="pt__pct">loading 0%</small>
+    </div>
+  </div>
+  <script>try { var n = sessionStorage.getItem("yeet-pt"); if (n) document.querySelector(".pt__name").textContent = n; } catch (e) {}</script>
+  <div class="cursor" aria-hidden="true"></div>
+  <header class="topbar">
+    <nav class="y-nav" data-nav data-nav-fixed aria-label="Main">
+      <a class="y-nav__logo" href="/" aria-label="yeet/ui home">
+        <span class="y-nav__mark">
+          <svg class="y-nav__ring" viewBox="0 0 56 56" aria-hidden="true"><circle class="bg" cx="28" cy="28" r="26" /><circle class="fg" cx="28" cy="28" r="26" pathLength="1" /></svg>
+          <span class="y-nav__glyph">✦</span>
+        </span>
+        <span>yeet<em>/</em>ui</span>
+      </a>
+      <div class="y-nav__links">
+        <span class="y-nav__blob" aria-hidden="true"></span>
+        <a class="y-nav__link" href="/"><span>Home</span></a>
+        <a class="y-nav__link" href="/components.html"><span>Components</span></a>
+        <a class="y-nav__link" href="/docs.html"><span>Docs</span></a>
+        <a class="y-nav__link" href="/tokens.html"><span>Tokens</span></a>
+        <a class="y-nav__link" href="/usage.html"><span>Usage</span></a>
+      </div>
+      <div class="y-nav__actions">
+        <button class="y-nav__search" type="button" data-search-open aria-label="Search">🔍 Search <kbd data-search-kbd>⌘K</kbd></button>
+        <a class="y-btn y-btn--ink y-btn--sm" href="/usage.html" data-magnetic>Get started →</a>
+        <button class="y-nav__burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navSheet"><span></span><span></span></button>
+      </div>
+    </nav>
+  </header>
+  <div class="y-nav__sheet" id="navSheet">
+    <a href="/"><span>Home</span></a>
+    <a href="/components.html"><span>Components</span></a>
+    <a href="/docs.html"><span>Docs</span></a>
+    <a href="/tokens.html"><span>Tokens</span></a>
+    <a href="/usage.html"><span>Usage</span></a>
+    <small>yeet/ui · v0.1 · made with 💖 + GSAP</small>
+  </div>

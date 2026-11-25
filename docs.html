@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Docs ✦ yeet/ui</title>
+  <meta property="og:title" content="Docs ✦ yeet/ui" />
+<!-- @include head -->
+</head>
+<body class="page-docs">
+<!-- @include nav -->
+
+  <header class="ph ph--compact" style="--ph:var(--y-blue);--ph2:var(--y-purple);--ph3:var(--y-mint)">
+    <div class="ph__bg"></div>
+    <img class="ph__prop" src="/src/assets/props/ring.svg" alt="" style="--x:80%;--y:18%;--s:150px" />
+    <img class="ph__prop" src="/src/assets/props/bolt.svg" alt="" style="--x:70%;--y:55%;--s:80px" />
+    <div class="ph__inner">
+      <div class="ph__crumbs"><a href="/">home</a><span>/</span><b>docs</b></div>
+      <h1 class="ph__title">Docs</h1>
+      <p class="ph__sub">Every component: live preview, copy-paste code and a full API table. Press <kbd class="ph__kbd" data-search-kbd>⌘K</kbd> to jump anywhere.</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="side">
+      <div class="side__card">
+        <div class="side__top">
+          <div class="side__now">
+            <span class="side__count"><b id="sideNow">01</b><i>/</i><span id="sideTotal">00</span></span>
+            <span class="side__name" id="sideName">Button</span>
+          </div>
+          <div class="side__bar" aria-hidden="true"><i id="sideBar"></i></div>
+          <label class="side__search">
+            <span aria-hidden="true">🔍</span>
+            <input id="search" type="search" placeholder="Filter…" autocomplete="off" aria-label="Filter components" />
+            <button class="side__k" type="button" data-search-open title="Search everything"><kbd data-search-kbd>⌘K</kbd></button>
+          </label>
+        </div>
+        <div class="side__scroll">
+          <nav id="sideNav" aria-label="Components"><span class="side__pill" aria-hidden="true"></span></nav>
+        </div>
+      </div>
+    </aside>
+    <main id="library"></main>
+  </div>
+
+<!-- @include footer -->
+<!-- @include overlays -->
+  <script type="module" src="/src/pages/docs-page.js"></script>
+</body>
+</html>

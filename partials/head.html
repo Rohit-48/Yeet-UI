@@ -1,0 +1,47 @@
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <meta name="description" content="yeet/ui — our loud, GSAP-animated component library." />
+  <meta property="og:image" content="/hero-bg.jpg" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#c6ff3d" />
+  <!-- prefetch same-site pages on hover so navigation is near-instant -->
+  <script type="speculationrules">{ "prefetch": [{ "where": { "href_matches": "/*" }, "eagerness": "moderate" }] }</script>
+  <!-- curtain state must be decided before first paint: "pt-in" = covered, "pt-boot" = first visit loader -->
+  <script>
+    (function () {
+      var r = document.documentElement;
+      try {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var s = sessionStorage;
+        if (s.getItem("yeet-pt")) r.classList.add("pt-in");
+        else if (!s.getItem("yeet-loaded")) r.classList.add("pt-in", "pt-boot");
+      } catch (e) {}
+      // failsafe: never leave the curtain down if scripts fail
+      setTimeout(function () { r.classList.remove("pt-in", "pt-boot"); }, 6000);
+    })();
+  </script>
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+    html { background: #fff8ec; }
+    .pt { position: fixed; inset: 0; z-index: 4000; display: grid; grid-template-columns: repeat(5, 1fr); pointer-events: none; visibility: hidden; }
+    .pt-in .pt { visibility: visible; pointer-events: auto; }
+    .pt__bar { display: block; background: var(--c); transform: scaleY(0); border-right: 2.5px solid #111014; will-change: transform; }
+    .pt__bar:nth-child(5) { border-right: 0; }
+    .pt-in .pt__bar { transform: scaleY(1); }
+    .pt__label { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 16px; opacity: 0; color: #111014; font-family: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif; }
+    .pt-in .pt__label { opacity: 1; }
+    .pt__mark { display: block; width: 88px; height: 88px; }
+    .pt__name { font-weight: 800; font-size: clamp(48px, 10vw, 112px); line-height: 1; letter-spacing: -.04em; padding: .1em .35em .16em; background: #fff; border: 2.5px solid #111014; border-radius: 28px; box-shadow: 8px 8px 0 #111014; white-space: nowrap; }
+    .pt__name span { display: inline-block; }
+    .pt__meter, .pt__pct { display: none; }
+    .pt-boot .pt__meter { display: block; width: 230px; height: 14px; background: #fff; border: 2.5px solid #111014; border-radius: 99px; overflow: hidden; box-shadow: 4px 4px 0 #111014; }
+    .pt__meter i { display: block; height: 100%; transform: scaleX(0); transform-origin: 0 50%; background: linear-gradient(90deg, #c6ff3d, #3dffc5, #ff4fd8); }
+    .pt-boot .pt__pct { display: block; font: 700 12px/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .14em; }
+    .pt-boot .pt__name { opacity: 0; } /* revealed once fonts are in, so there's no font swap flash */
+  </style>
