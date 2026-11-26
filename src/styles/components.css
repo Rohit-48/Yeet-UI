@@ -376,7 +376,7 @@
    Sizes are in container units (cqw) so the whole box scales with its width. */
 .y-filebox {
   position: relative; width: min(560px, 100%); max-width: 100%; min-width: 0; aspect-ratio: 100 / 76;
-  container-type: inline-size; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+  container-type: inline-size; cursor: default; user-select: none; -webkit-tap-highlight-color: transparent;
   outline: none;
 }
 .y-filebox:focus-visible .y-filebox__front { outline: 3px dashed var(--y-blue); outline-offset: 5px; }
@@ -460,6 +460,17 @@
 }
 .y-filebox__mute:hover { transform: rotate(-12deg) scale(1.1); }
 .y-filebox__mute[aria-pressed="true"] { background: var(--y-pink); }
+/* built-in "next" button on the box */
+.y-filebox__next {
+  pointer-events: auto; position: absolute; left: 4.5%; bottom: 13%; display: inline-flex; align-items: center; gap: 1cqw;
+  padding: 1.3cqw 2.6cqw; font: 800 2.9cqw/1 var(--y-font-display); color: var(--y-ink); cursor: pointer;
+  background: var(--y-lime); border: 2px solid var(--y-ink); border-radius: 99px; box-shadow: .7cqw .7cqw 0 var(--y-ink);
+  transform: rotate(-3deg); transition: transform .2s var(--y-ease-bounce), box-shadow .2s var(--y-ease-bounce);
+}
+.y-filebox__next span { display: inline-block; }
+.y-filebox__next:hover { transform: rotate(-3deg) translate(-.3cqw, -.3cqw); box-shadow: 1cqw 1cqw 0 var(--y-ink); }
+.y-filebox__next:active { transform: rotate(-3deg) translate(.6cqw, .6cqw); box-shadow: 0 0 0 var(--y-ink); }
+.y-filebox__next:focus-visible { outline: 3px dashed var(--y-blue); outline-offset: 3px; }
 /* front folder: "open" hint + cursors */
 .y-folder { cursor: pointer; }
 .y-folder.is-front { cursor: zoom-in; }
@@ -523,6 +534,13 @@
 .y-fview__items small { color: var(--y-muted); font-size: .82rem; }
 .y-fview__empty { display: grid; justify-items: center; gap: .4rem; padding: 2rem 1rem; text-align: center; color: var(--y-muted); font-weight: 600; }
 .y-fview__empty span { font-size: 2.4rem; }
+/* [placeholder] slots: mark where your own content goes in templates */
+.y-slot {
+  display: inline-block; padding: .05em .45em; font-family: var(--y-font-mono); font-weight: 700; font-size: .88em;
+  color: #d6249f; background: rgba(255, 79, 216, .1); border: 2px dashed #ff4fd8; border-radius: 8px;
+}
+.y-fview__empty code { font: 700 .78rem var(--y-font-mono); color: var(--y-ink); background: rgba(17,16,20,.07); padding: .1em .35em; border-radius: 6px; }
+.y-fview__items .ico .y-slot { font-size: .5rem; padding: .15em .25em; border-width: 1.5px; border-radius: 5px; }
 .y-fview__strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; padding: .6rem; background: var(--y-ink); border-radius: 12px; }
 .y-fview__strip div { aspect-ratio: 1; display: grid; place-items: center; background: var(--c); border-radius: 8px; padding: 10%; }
 .y-fview__strip svg { width: 100%; height: auto; }

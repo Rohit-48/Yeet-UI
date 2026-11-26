@@ -370,7 +370,7 @@ const search = yeet.search({
   },
   {
     id: "filebox", name: "Folder Box", emoji: "🗂️", category: "Display", tile: "wide", color: "yellow",
-    desc: "A storage box of folder cards with a box cat. Click it and the front folder lifts out and drops into the back, so the next one comes forward, on loop. Holds up to 12 folders. Add data-cat for the cat (eyes follow you, click it for a meow) and data-sound for synthesized swish / thud / pop sounds.",
+    desc: "A storage box of folder cards with a box cat. Click a folder to open it; the \"next →\" button on the box lifts the front folder out and drops it into the back, so the next one comes forward, on loop. Holds up to 12 folders. Add data-cat for the cat (eyes follow you, click it for a meow) and data-sound for synthesized swish / thud / pop sounds.",
     mini: `<div class="y-filebox" data-cat style="width:150px;margin:14px 0 0 30px;pointer-events:none">
       <div class="y-filebox__cat">${CAT_SVG}</div><div class="y-filebox__paw">${PAW_SVG}</div>
       <div class="y-filebox__back"></div>
@@ -383,7 +383,7 @@ const search = yeet.search({
       <div class="y-filebox__front"><span class="y-filebox__handle"></span><span class="y-filebox__note">Portfolio</span></div>
     </div>`,
     groups: [
-      { label: "Portfolio box", hint: "tap the front folder to open it · tap the box or a folder behind to shuffle · ← → keys", layout: "block", html: `
+      { label: "Portfolio box", hint: "tap a folder to open it · \"next →\" on the box shuffles · ← → keys", layout: "block", html: `
 <div style="display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;padding-top:9rem">
   <div class="y-filebox" id="demoBox" data-filebox data-capacity="12" data-cat data-sound style="flex:1 1 280px">
     <div class="y-filebox__back"></div>
@@ -419,13 +419,73 @@ const search = yeet.search({
   </div>
   <div style="display:grid;gap:.75rem">
     <button class="y-btn y-btn--sm y-btn--ink" data-filebox-open="#demoBox">Open front 📂</button>
-    <button class="y-btn y-btn--sm" data-filebox-next="#demoBox">Next folder →</button>
     <button class="y-btn y-btn--sm y-btn--pink" data-filebox-add="#demoBox">+ Add folder</button>
     <button class="y-btn y-btn--sm y-btn--ghost" data-filebox-remove="#demoBox">Take out front</button>
   </div>
 </div>` },
+      { label: "Blank template", hint: "copy this · replace every [ … ] with your content · open a folder to see its slots", layout: "block", html: `
+<div style="padding-top:9rem">
+  <div class="y-filebox" id="blankBox" data-filebox data-capacity="12">
+    <div class="y-filebox__back"></div>
+    <div class="y-filebox__stack">
+
+      <!-- FOLDER 1 · copy this <article> once per folder (12 max) -->
+      <article class="y-folder" style="--c:var(--y-lime)">
+        <span class="y-folder__tab"><b>[Doc-01]</b></span>
+        <div class="y-folder__body">
+          <span class="y-folder__label">[Folder title]<small>[short note]</small></span>
+          <span class="y-folder__paper"></span>
+        </div>
+        <span class="y-folder__open" aria-hidden="true">open ↗</span>
+        <!-- everything inside <template> appears on the sheet when the folder opens -->
+        <template class="y-folder__content">
+          <ul class="y-fview__items">
+            <li><span class="ico">[emoji]</span><span><b>[Item title]</b><small>[item details]</small></span></li>
+            <li><span class="ico">[emoji]</span><span><b>[Item title]</b><small>[item details]</small></span></li>
+          </ul>
+          <p>[add text]</p>
+        </template>
+      </article>
+
+      <!-- FOLDER 2 · free-form: paragraphs, images, links, anything -->
+      <article class="y-folder" style="--c:var(--y-pink)">
+        <span class="y-folder__tab"><b>[Doc-02]</b></span>
+        <div class="y-folder__body">
+          <span class="y-folder__label">[Folder title]<small>[short note]</small></span>
+          <span class="y-folder__paper"></span>
+        </div>
+        <span class="y-folder__open" aria-hidden="true">open ↗</span>
+        <template class="y-folder__content">
+          <p>[add text]</p>
+          <p>[add more text]</p>
+          <p><a href="#">[link text]</a></p>
+        </template>
+      </article>
+
+    </div>
+    <div class="y-filebox__front">
+      <span class="y-filebox__handle"></span>
+      <span class="y-filebox__note">[Box title]</span>
+      <div class="y-filebox__meta"><span class="y-filebox__count">02 / 12</span><span class="y-filebox__slots"></span></div>
+    </div>
+    <span class="y-filebox__live" aria-live="polite"></span>
+  </div>
+</div>` },
     ],
-    extraCode: [{ lang: "js", label: "control it from JS", src: `
+    extraCode: [{ lang: "js", label: "or build a folder in JS · replace every [ … ]", src: `
+const box = yeet.filebox(document.querySelector("#blankBox"));
+
+box.add({
+  doc: "[Doc-03]",                 // little tab on top
+  label: "[Folder title]",          // sticker on the folder
+  note: "[short note]",             // small line under the title
+  color: "var(--y-blue)",           // any CSS color
+  items: [                          // a list on the sheet…
+    { emoji: "[emoji]", title: "[Item title]", meta: "[item details]" },
+  ],
+  // …or free-form HTML instead of items:
+  // content: "<p>[add text]</p>",
+});` }, { lang: "js", label: "control it from JS", src: `
 const box = yeet.filebox(document.querySelector("#demoBox"));
 box.open();   // opens the front folder (box.close() to shut it)
 box.next();   // front folder → back of the box
@@ -436,7 +496,8 @@ box.remove(); // takes out the front folder
 box.size;     // how many are stored
 box.el.addEventListener("filebox:change", (e) => console.log(e.detail.front, e.detail.size));` }],
     api: [
-      ["[data-filebox]", "attribute", "Root. Tap the front folder (or Enter / Space) to open it. Tap the box or → for the next folder (loops); tap a folder behind to pull it forward; ← or shift-click goes back."],
+      ["[data-filebox]", "attribute", "Root. Clicking a folder opens it (one behind slides to the front first). Clicking the box itself does nothing. Enter / Space opens the front folder; → / ← shuffle."],
+      [".y-filebox__next", "element", "The \"next →\" button on the box: brings the next folder forward (loops). Added automatically if your markup doesn't include one."],
       ["<template class=\"y-folder__content\">", "element", "What's inside a folder, shown on the sheet when it opens. Any HTML. folderHTML({ items }) builds a list for you."],
       ["data-capacity", "attribute", "Max folders the box holds. Default 12; extra markup is dropped, add() refuses with a shake + toast."],
       [".y-folder", "class", "A folder card. Use yeet.folderHTML({ doc, label, note, color, items | content }) to generate one."],

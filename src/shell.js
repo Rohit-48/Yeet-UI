@@ -34,11 +34,12 @@ export const hlHTML = (code) => esc(code)
   .replace(/([\w-]+)="([^"]*)"/g, '<span class="a">$1</span>=<span class="s">"$2"</span>')
   .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="t">$2</span>')
   .replace(/(&lt;!--.*?--&gt;)/g, '<span class="c">$1</span>');
-export const hlJS = (code) => esc(code)
-  .replace(/(\/\/[^\n]*)/g, '<span class="c">$1</span>')
-  .replace(/("[^"\n]*")/g, '<span class="s">$1</span>')
-  .replace(/\b(import|from|const|let|await|new|export|function|return)\b/g, '<span class="k">$1</span>')
-  .replace(/\b(yeet)\b/g, '<span class="a">$1</span>');
+// one pass, so a token is only ever coloured once (sequential replaces used to re-match
+// the quotes inside an already-inserted <span class="c">)
+export const hlJS = (code) => esc(code).replace(
+  /(\/\/[^\n]*)|("[^"\n]*")|\b(import|from|const|let|await|new|export|function|return)\b|\b(yeet)\b/g,
+  (m, c, s, k, a) => (c ? `<span class="c">${c}</span>` : s ? `<span class="s">${s}</span>` : k ? `<span class="k">${k}</span>` : `<span class="a">${a}</span>`),
+);
 export const hlCSS = (code) => esc(code)
   .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="c">$1</span>')
   .replace(/(--[\w-]+)(?=\s*:)/g, '<span class="a">$1</span>')

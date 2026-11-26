@@ -332,6 +332,26 @@ export function folderHTML({ doc = "Doc", label = "Untitled", note = "", color =
   </article>`;
 }
 
+/** Wraps "[placeholder]" text in <span class="y-slot"> so unfilled template slots stand out.
+    Your real content (no square brackets) is left untouched. */
+export function markSlots(root) {
+  const re = /(\[[^\]\n]{1,40}\])/;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => (re.test(n.nodeValue) && !n.parentElement?.closest(".y-slot, code, pre, script, style, textarea") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((n) => {
+    const frag = document.createDocumentFragment();
+    n.nodeValue.split(re).forEach((part) => {
+      if (!part) return;
+      frag.append(re.test(part) && part.startsWith("[") ? Object.assign(document.createElement("span"), { className: "y-slot", textContent: part }) : part);
+    });
+    n.replaceWith(frag);
+  });
+  return root;
+}
+
 /* ---------- opened folder view ----------
    The folder flies out of the box to the centre (FLIP from the card's rect), its
    cover swings open like a real folder, and the sheet inside shows the folder's
@@ -371,7 +391,8 @@ function openFolderView(card, { sfx = () => {}, onClose } = {}) {
     </div>`;
   const body = view.querySelector(".y-fview__content");
   if (tpl) body.append(tpl.content.cloneNode(true));
-  else body.innerHTML = `<div class="y-fview__empty"><span>👀</span>This folder is empty… for now.</div>`;
+  else body.innerHTML = `<div class="y-fview__empty"><span>👀</span>This folder is empty… for now.<small>Put your content in a <code>&lt;template class="y-folder__content"&gt;</code> inside the folder.</small></div>`;
+  markSlots(view);
   document.body.append(view);
   document.body.style.overflow = "hidden";
 
@@ -565,7 +586,8 @@ function filebox(el) {
   const live = el.querySelector(".y-filebox__live");
   if (slotsEl) slotsEl.innerHTML = "<i></i>".repeat(capacity);
   el.tabIndex = 0;
-  el.setAttribute("role", "button");
+  el.setAttribute("role", "group"); // not a button any more: it contains its own buttons
+  markSlots(el); // highlight any unfilled [placeholder] labels on the box and folders
   el.setAttribute("aria-roledescription", "folder box");
 
   // sound (data-sound) + a mute toggle next to the counter
@@ -582,6 +604,22 @@ function filebox(el) {
     row.append(mute, countEl);
   }
   const cat = boxCat(el, sfx);
+
+  // built-in "next" button stuck on the box (added automatically if the markup doesn't have one)
+  let nextBtn = el.querySelector(".y-filebox__next");
+  if (!nextBtn) {
+    nextBtn = Object.assign(document.createElement("button"), { type: "button", className: "y-filebox__next", innerHTML: 'next <span aria-hidden="true">→</span>' });
+    (el.querySelector(".y-filebox__front") || el).append(nextBtn);
+  }
+  nextBtn.setAttribute("aria-label", "Next folder");
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (view) return;
+    next();
+    const arrow = nextBtn.querySelector("span");
+    if (arrow && !reduced()) gsap.fromTo(arrow, { x: 0 }, { x: 5, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out" });
+  });
+  nextBtn.addEventListener("keydown", (e) => e.stopPropagation()); // Enter on the button = next, not "open"
 
   const DEPTH = 4; // visible fan depth; deeper folders wait behind the last slot
   const slot = (i) => {
@@ -692,14 +730,14 @@ function filebox(el) {
   }
 
   // pull a folder that's peeking out behind straight to the front
-  function bringToFront(card) {
+  function bringToFront(card, then) {
     const i = order.indexOf(card);
-    if (i <= 0) return;
+    if (i <= 0) return then?.();
     finish();
     order = [...order.slice(i), ...order.slice(0, i)];
     const W = el.clientWidth;
     card.style.zIndex = 200;
-    busy = gsap.timeline({ onComplete: () => (busy = null) })
+    busy = gsap.timeline({ onComplete: () => { busy = null; then?.(); } })
       .to(card, { y: -W * 0.46, rotation: 6, duration: 0.3 * D(), ease: "power2.out" })
       .add(update)
       .to(card, { ...slot(0), duration: 0.5 * D(), ease: "back.out(1.4)" });
@@ -723,14 +761,15 @@ function filebox(el) {
   }
   const close = () => view?.close();
 
-  // tap the front folder → open it · tap a folder behind → pull it forward · tap the box → next (loops)
+  // Opening only happens on a folder: the front one opens straight away, one peeking out
+  // behind slides to the front first, then opens. Clicking the box itself does nothing;
+  // shuffling is the "next" button (or the arrow keys).
   el.addEventListener("click", (e) => {
-    if (view) return;
+    if (view || busy) return;
     const card = e.target.closest(".y-folder");
-    if (e.shiftKey) return prev();
-    if (card && card === order[0]) return open();
-    if (card) return bringToFront(card);
-    next();
+    if (!card || !order.includes(card)) return;
+    if (card === order[0]) return open();
+    bringToFront(card, open);
   });
   el.addEventListener("keydown", (e) => {
     if (view) return;
@@ -839,5 +878,5 @@ function init(root = document) {
     }));
 }
 
-export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, sound, search: createSearch };
+export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, markSlots, sound, search: createSearch };
 window.yeet = yeet;
