@@ -4,6 +4,8 @@
    code tab (groups' HTML + optional extra code) and API table.
    ============================================ */
 
+import { folderHTML, CAT_SVG, PAW_SVG } from "./components.js";
+
 export const categories = ["Actions", "Forms", "Display", "Navigation", "Overlays", "Feedback"];
 
 export const components = [
@@ -364,6 +366,87 @@ const search = yeet.search({
       ["[data-search-open]", "attribute", "Any element that should open the search."],
       ["[data-search-kbd]", "attribute", "Filled with ⌘K on Mac, Ctrl K elsewhere."],
       [".y-cmdk / __box / __item / __hl", "element", "Overlay, square box, result rows, sliding highlight."],
+    ],
+  },
+  {
+    id: "filebox", name: "Folder Box", emoji: "🗂️", category: "Display", tile: "wide", color: "yellow",
+    desc: "A storage box of folder cards with a box cat. Click it and the front folder lifts out and drops into the back, so the next one comes forward, on loop. Holds up to 12 folders. Add data-cat for the cat (eyes follow you, click it for a meow) and data-sound for synthesized swish / thud / pop sounds.",
+    mini: `<div class="y-filebox" data-cat style="width:150px;margin:14px 0 0 30px;pointer-events:none">
+      <div class="y-filebox__cat">${CAT_SVG}</div><div class="y-filebox__paw">${PAW_SVG}</div>
+      <div class="y-filebox__back"></div>
+      <div class="y-filebox__stack">
+        <article class="y-folder" style="--c:#8ecbff;z-index:97;transform:translate(53px,-12px) rotate(2deg) scale(.95)"><span class="y-folder__tab"><b>Doc-04</b></span><div class="y-folder__body"></div></article>
+        <article class="y-folder y-folder--dark" style="--c:var(--y-blue);z-index:98;transform:translate(35px,-8px) rotate(-1.5deg) scale(.96)"><span class="y-folder__tab"><b>Doc-03</b></span><div class="y-folder__body"></div></article>
+        <article class="y-folder" style="--c:var(--y-pink);z-index:99;transform:translate(18px,-4px) rotate(2.5deg) scale(.98)"><span class="y-folder__tab"><b>Doc-02</b></span><div class="y-folder__body"></div></article>
+        <article class="y-folder" style="--c:var(--y-orange);z-index:100;transform:rotate(-2deg)"><span class="y-folder__tab"><b>Doc-01</b></span><div class="y-folder__body"><span class="y-folder__label">Illustration</span></div></article>
+      </div>
+      <div class="y-filebox__front"><span class="y-filebox__handle"></span><span class="y-filebox__note">Portfolio</span></div>
+    </div>`,
+    groups: [
+      { label: "Portfolio box", hint: "tap the front folder to open it · tap the box or a folder behind to shuffle · ← → keys", layout: "block", html: `
+<div style="display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;padding-top:9rem">
+  <div class="y-filebox" id="demoBox" data-filebox data-capacity="12" data-cat data-sound style="flex:1 1 280px">
+    <div class="y-filebox__back"></div>
+    <div class="y-filebox__stack">
+      ${folderHTML({ doc: "Doc-01", label: "Illustration", note: "12 pieces", color: "var(--y-orange)", items: [
+        { emoji: "🐙", title: "Octo Boba", meta: "Procreate · 2026", color: "var(--y-pink)" },
+        { emoji: "🌵", title: "Desert Disco", meta: "Risograph print", color: "var(--y-lime)" },
+        { emoji: "🍜", title: "Midnight Ramen", meta: "Gouache", color: "var(--y-yellow)" },
+        { emoji: "🛸", title: "Lost & Found", meta: "Zine cover", color: "#8ecbff" },
+      ] })}
+      ${folderHTML({ doc: "Doc-02", label: "Graphic Design", note: "posters + type", color: "var(--y-pink)", items: [
+        { emoji: "🎟️", title: "Gig Poster Series", meta: "6 posters · screenprint", color: "var(--y-orange)" },
+        { emoji: "🔤", title: "Wobbly Grotesk", meta: "Custom display font", color: "var(--y-lime)" },
+        { emoji: "🧃", title: "Juice Label", meta: "Packaging", color: "var(--y-mint)" },
+      ] })}
+      ${folderHTML({ doc: "Doc-03", label: "Personal Project", note: "cat comics", color: "var(--y-blue)", content: `
+        <div class="y-fview__strip">
+          <div style="--c:var(--y-orange)">${CAT_SVG}</div><div style="--c:var(--y-lime)">${CAT_SVG}</div><div style="--c:var(--y-pink)">${CAT_SVG}</div>
+        </div>
+        <p style="margin:.9rem 0 0;font-weight:600">Issue #3: the box cat finally gets its own folder. 🐾</p>` })}
+      ${folderHTML({ doc: "Doc-04", label: "Art", note: "sketchbook", color: "#8ecbff", items: [
+        { emoji: "🖍️", title: "Sketchbook vol. 4", meta: "86 pages", color: "var(--y-yellow)" },
+        { emoji: "🖼️", title: "Oil Study", meta: "Still life", color: "var(--y-orange)" },
+        { emoji: "🌙", title: "Night Walks", meta: "Ink + wash", color: "var(--y-purple)" },
+      ] })}
+    </div>
+    <div class="y-filebox__front">
+      <span class="y-filebox__handle"></span>
+      <span class="y-filebox__note">Portfolio</span>
+      <div class="y-filebox__meta"><span class="y-filebox__count">04 / 12</span><span class="y-filebox__slots"></span></div>
+    </div>
+    <span class="y-filebox__live" aria-live="polite"></span>
+  </div>
+  <div style="display:grid;gap:.75rem">
+    <button class="y-btn y-btn--sm y-btn--ink" data-filebox-open="#demoBox">Open front 📂</button>
+    <button class="y-btn y-btn--sm" data-filebox-next="#demoBox">Next folder →</button>
+    <button class="y-btn y-btn--sm y-btn--pink" data-filebox-add="#demoBox">+ Add folder</button>
+    <button class="y-btn y-btn--sm y-btn--ghost" data-filebox-remove="#demoBox">Take out front</button>
+  </div>
+</div>` },
+    ],
+    extraCode: [{ lang: "js", label: "control it from JS", src: `
+const box = yeet.filebox(document.querySelector("#demoBox"));
+box.open();   // opens the front folder (box.close() to shut it)
+box.next();   // front folder → back of the box
+box.prev();   // back folder → front
+box.add({ doc: "Doc-05", label: "Branding", note: "logos", color: "var(--y-lime)",
+  items: [{ emoji: "🎨", title: "Logo set", meta: "3 directions" }] }); // null when full (12/12)
+box.remove(); // takes out the front folder
+box.size;     // how many are stored
+box.el.addEventListener("filebox:change", (e) => console.log(e.detail.front, e.detail.size));` }],
+    api: [
+      ["[data-filebox]", "attribute", "Root. Tap the front folder (or Enter / Space) to open it. Tap the box or → for the next folder (loops); tap a folder behind to pull it forward; ← or shift-click goes back."],
+      ["<template class=\"y-folder__content\">", "element", "What's inside a folder, shown on the sheet when it opens. Any HTML. folderHTML({ items }) builds a list for you."],
+      ["data-capacity", "attribute", "Max folders the box holds. Default 12; extra markup is dropped, add() refuses with a shake + toast."],
+      [".y-folder", "class", "A folder card. Use yeet.folderHTML({ doc, label, note, color, items | content }) to generate one."],
+      [".y-folder__tab / __label / __paper", "element", "Doc tab, taped sticker label (with optional <small> note), lined paper peeking out."],
+      ["--c", "css var", "Folder color. Add .y-folder--dark for dark colors."],
+      [".y-filebox__note / __count / __slots", "element", "Sticky-note title, 04 / 12 counter, and the 12 storage dots (front one pops)."],
+      ["data-cat", "attribute", "Adds the box cat: peeks from behind, eyes follow the cursor, blinks, watches folders, pats the box, gets shocked when full. Click it to meow."],
+      ["data-sound", "attribute", "Synthesized sounds (Web Audio, no files): swish + thud on cycle, pop on add, bonk when full, meow. Adds a 🔊 mute toggle, remembered across visits."],
+      ["yeet.filebox(el)", "js", "Returns { open, close, next, prev, add, remove, size, front, capacity }. Fires filebox:change, filebox:open, filebox:close."],
+      ["yeet.sound", "js", "play(\"swish\" | \"thud\" | \"pop\" | \"bonk\" | \"meow\" | \"tick\"), muted = true/false, toggle()."],
     ],
   },
   {
