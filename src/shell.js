@@ -5,6 +5,7 @@
    ============================================ */
 import "./styles/tokens.css";
 import "./styles/components.css";
+import "./styles/widgets.css";
 import "./styles/site.css";
 import "./styles/pages.css";
 import gsap from "gsap";
@@ -23,7 +24,7 @@ export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 export const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 export const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-export const catColor = { Actions: "lime", Forms: "blue", Display: "yellow", Navigation: "purple", Overlays: "pink", Feedback: "mint" };
+export const catColor = { Actions: "lime", Forms: "blue", Display: "yellow", Navigation: "purple", Overlays: "pink", Feedback: "mint", Widgets: "orange" };
 export const kindColor = { class: "lime", modifier: "yellow", element: "white", state: "pink", attribute: "mint", "css var": "orange", js: "purple" };
 export const dedent = (str) => {
   const lines = str.replace(/^\n+|\s+$/g, "").split("\n");

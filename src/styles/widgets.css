@@ -1,0 +1,153 @@
+/* ============================================
+   YEET/UI — widgets: clocks, weather, stats
+   Everything scales from one unit: --u (the size of one grid square).
+   <div class="y-wgt">            2×2 small widget
+   <div class="y-wgt y-wgt--wide"> 4×2 wide widget
+     <div class="y-cell y-cell--sky y-cell--big">…</div>
+   ============================================ */
+.y-wgt {
+  --u: 84px;
+  --cols: 2;
+  --g: calc(var(--u) * 0.11);
+  --shell: #0b0b0c;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--cols), minmax(var(--u), 1fr));
+  grid-template-rows: repeat(2, var(--u));
+  gap: var(--g);
+  padding: var(--g);
+  border-radius: calc(var(--u) * 0.42);
+  background: var(--shell);
+  font-family: var(--y-font-body);
+  font-weight: 500;
+  color: #fff;
+  vertical-align: top;
+  box-shadow: 0 0 0 0 var(--y-lime);
+  transition: transform 0.45s var(--y-ease-bounce), box-shadow 0.45s var(--y-ease-bounce);
+}
+.y-wgt:hover { transform: translate(-3px, -3px) rotate(-0.6deg); box-shadow: 6px 6px 0 0 var(--y-lime); }
+.y-wgt--wide { --cols: 4; }
+
+/* ---------- cells ---------- */
+.y-cell {
+  --c: #000;
+  --ink: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: calc(var(--u) * 0.13) calc(var(--u) * 0.15);
+  border-radius: calc(var(--u) * 0.3);
+  background: var(--c);
+  color: var(--ink);
+  overflow: hidden;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  transition: scale 0.35s var(--y-ease-bounce);
+}
+.y-cell:active { scale: 0.96; }
+/* dark cells get a faint ring so they read against the shell */
+.y-cell { box-shadow: inset 0 0 0 calc(var(--u) * 0.025) var(--ring, rgba(255, 255, 255, 0.16)); }
+.y-cell--sky, .y-cell--orange, .y-cell--red, .y-cell--yellow, .y-cell--grey,
+.y-cell--white, .y-cell--steel, .y-cell--navy, .y-cell--blue, .y-cell--lime, .y-cell--pink, .y-cell--purple { --ring: transparent; }
+.y-cell--w2 { grid-column: span 2; }
+.y-cell--h2 { grid-row: span 2; }
+.y-cell--big { grid-column: span 2; grid-row: span 2; }
+.y-cell--round { border-radius: 50%; align-items: center; justify-content: center; padding: 0; }
+.y-cell--center { align-items: center; justify-content: center; text-align: center; }
+
+.y-cell--black  { --c: #000;    --ink: #fff; }
+.y-cell--sky    { --c: #5ec2ff; --ink: #0b0b0c; }
+.y-cell--orange { --c: #ff8a1f; --ink: #0b0b0c; }
+.y-cell--red    { --c: #ff3b1f; --ink: #0b0b0c; }
+.y-cell--yellow { --c: #ffe100; --ink: #0b0b0c; }
+.y-cell--grey   { --c: #d9d9d9; --ink: #0b0b0c; }
+.y-cell--white  { --c: #ececec; --ink: #0b0b0c; }
+.y-cell--steel  { --c: #a9c3cd; --ink: #0b0b0c; }
+.y-cell--navy   { --c: #0f1f45; --ink: #fff; }
+.y-cell--blue   { --c: #2f6bff; --ink: #fff; }
+/* yeet palette remixes */
+.y-cell--lime   { --c: var(--y-lime);   --ink: #0b0b0c; }
+.y-cell--pink   { --c: var(--y-pink);   --ink: #0b0b0c; }
+.y-cell--purple { --c: var(--y-purple); --ink: #fff; }
+
+/* ---------- type helpers ---------- */
+.y-wgt__xl   { font-size: calc(var(--u) * 0.86); letter-spacing: -0.05em; }
+.y-wgt__lg   { font-size: calc(var(--u) * 0.6);  letter-spacing: -0.045em; }
+.y-wgt__md   { font-size: calc(var(--u) * 0.34); letter-spacing: -0.03em; }
+.y-wgt__sm   { font-size: calc(var(--u) * 0.2); }
+.y-wgt__xs   { font-size: calc(var(--u) * 0.13); letter-spacing: 0; }
+.y-wgt__push { margin-top: auto; }
+
+/* ---------- weather ---------- */
+.y-wx__sky { display: flex; align-items: center; gap: 0.35em; font-size: calc(var(--u) * 0.16); letter-spacing: 0; }
+.y-wx__sky .y-wi { font-size: 1.7em; }
+.y-wx__temp { font-size: calc(var(--u) * 0.86); letter-spacing: -0.05em; margin: auto 0 0; line-height: 0.9; }
+.y-wx__temp sup { font-size: 0.6em; vertical-align: 0.42em; margin-left: 0.02em; }
+.y-wx__city { margin-top: calc(var(--u) * 0.1); font-size: calc(var(--u) * 0.2); letter-spacing: -0.01em; }
+
+/* ---------- icons (filled by yeet.init from data-wi) ---------- */
+.y-wi { display: inline-grid; width: 1em; height: 1em; flex: none; line-height: 0; }
+.y-wi svg { width: 100%; height: 100%; overflow: visible; }
+
+/* ---------- analog clock ---------- */
+.y-aclock { --hand: #2be36b; --hand-edge: currentColor; position: relative; width: 100%; height: 100%; aspect-ratio: 1; margin: auto; }
+.y-aclock svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.y-aclock .ticks line { stroke: currentColor; stroke-linecap: round; }
+.y-aclock text { fill: currentColor; font: 500 13px var(--y-font-body); text-anchor: middle; dominant-baseline: central; }
+.y-aclock .lbl { font-size: 11px; opacity: 0.75; }
+.y-aclock .win rect { fill: currentColor; opacity: 0.28; }
+.y-aclock .win text { font-size: 15px; }
+.y-aclock .hand { fill: var(--hand); stroke: var(--hand-edge); stroke-width: 2.2; stroke-linejoin: round; }
+.y-aclock .sec { stroke: var(--hand); stroke-width: 2.2; stroke-linecap: round; }
+.y-aclock .hub { fill: var(--hand); stroke: var(--hand-edge); stroke-width: 2; }
+.y-aclock--red { --hand: #ff3b1f; }
+.y-aclock--ink { --hand: #0b0b0c; --hand-edge: #fff; }
+.y-cell--big > .y-aclock { width: 104%; height: 104%; margin: -2%; }
+
+/* ---------- world clock (code / date / offset + mini dial) ---------- */
+.y-wclock { flex-direction: row; align-items: center; gap: calc(var(--u) * 0.08); padding-right: calc(var(--u) * 0.1); }
+.y-wclock__txt { display: grid; gap: calc(var(--u) * 0.03); min-width: 0; }
+.y-wclock__code { font-size: calc(var(--u) * 0.3); font-weight: 700; letter-spacing: -0.02em; margin-bottom: calc(var(--u) * 0.04); }
+.y-wclock__meta { font-size: calc(var(--u) * 0.13); letter-spacing: 0; white-space: nowrap; opacity: 0.85; }
+.y-wclock .y-aclock { width: auto; height: 100%; margin: 0 0 0 auto; flex: none; }
+
+/* ---------- digital clock / date / stat ---------- */
+.y-dclock { flex-direction: row; align-items: center; justify-content: center; font-size: calc(var(--u) * 0.66); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.y-dclock[class*="y-cell--"]:not(.y-cell--w2) { font-size: calc(var(--u) * 0.3); justify-content: flex-end; padding-bottom: calc(var(--u) * 0.14); }
+.y-dclock__colon { animation: y-blink 1s steps(1) infinite; }
+@keyframes y-blink { 50% { opacity: 0.2; } }
+.y-dday { font-size: calc(var(--u) * 0.34); line-height: 0.95; letter-spacing: -0.03em; }
+.y-dbig { flex-direction: row; align-items: center; gap: calc(var(--u) * 0.08); }
+.y-dbig__day { font-size: calc(var(--u) * 0.68); letter-spacing: -0.05em; color: var(--accent, #ff3b1f); }
+.y-dbig__rest { display: grid; }
+.y-dbig__rest span:first-child { font-size: calc(var(--u) * 0.15); letter-spacing: 0; justify-self: start; }
+.y-dbig__rest span:last-child { font-size: calc(var(--u) * 0.38); letter-spacing: -0.04em; }
+.y-cell--orange { --sun: #ffd60a; }
+.y-cell--yellow { --sun: #ff7a1a; }
+.y-stat { flex-direction: row; align-items: center; justify-content: center; font-size: calc(var(--u) * 0.56); letter-spacing: -0.05em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.y-stat--sm { font-size: calc(var(--u) * 0.46); }
+
+/* ---------- sun / wind / temp dot ---------- */
+.y-sun, .y-wind { align-items: center; justify-content: space-between; text-align: center; }
+.y-sun .y-wi, .y-wind .y-wi { font-size: calc(var(--u) * 0.42); margin-top: calc(var(--u) * 0.02); }
+.y-sun__t, .y-wind__t { font-size: calc(var(--u) * 0.2); letter-spacing: -0.01em; }
+.y-wind__t { font-size: calc(var(--u) * 0.15); }
+.y-wind .y-wi { transition: rotate 0.8s var(--y-ease-bounce); }
+.y-wind:hover .y-wi { rotate: 30deg; }
+.y-temp { font-size: calc(var(--u) * 0.36); letter-spacing: -0.03em; }
+
+/* ---------- board ---------- */
+.y-wgt-board {
+  --u: clamp(54px, 8.6vw, 92px);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(2 * var(--u) + 3 * var(--u) * 0.11));
+  gap: calc(var(--u) * 0.3);
+  justify-content: center;
+}
+.y-wgt-board .y-wgt { --u: inherit; display: grid; }
+.y-wgt-board .y-wgt--wide { grid-column: span 2; }
+@media (max-width: 420px) { .y-wgt-board { --u: 62px; } }
+@media (prefers-reduced-motion: reduce) {
+  .y-wgt, .y-cell, .y-wind .y-wi { transition: none; }
+  .y-dclock__colon { animation: none; }
+}

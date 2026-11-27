@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { createSearch } from "./search.js";
 import { sound } from "./sound.js";
+import { widgets, aclock, zoned, formatNum, ICONS as weatherIcons } from "./widgets.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -795,6 +796,7 @@ function init(root = document) {
   $$("[data-marquee]", root).forEach(marquee);
   $$("[data-nav]", root).forEach(nav);
   $$("[data-filebox]", root).forEach(filebox);
+  widgets(root);
   // demo helpers: <button data-filebox-add="#box"> / data-filebox-remove / data-filebox-next
   const presets = [["Branding", "logos + type"], ["Motion", "gsap studies"], ["3D", "blender bits"], ["UX Audit", "client work"], ["Photos", "film scans"], ["Zines", "print"], ["Web", "sites"], ["Sketches", "napkin ideas"]];
   $$("[data-filebox-add]", root).forEach((b) => b.addEventListener("click", () => {
@@ -878,5 +880,5 @@ function init(root = document) {
     }));
 }
 
-export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, markSlots, sound, search: createSearch };
+export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, markSlots, sound, widgets, aclock, zoned, formatNum, weatherIcons, search: createSearch };
 window.yeet = yeet;

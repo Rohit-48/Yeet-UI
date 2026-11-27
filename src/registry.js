@@ -6,7 +6,7 @@
 
 import { folderHTML, CAT_SVG, PAW_SVG } from "./components.js";
 
-export const categories = ["Actions", "Forms", "Display", "Navigation", "Overlays", "Feedback"];
+export const categories = ["Actions", "Forms", "Display", "Navigation", "Overlays", "Feedback", "Widgets"];
 
 export const components = [
   {
@@ -567,6 +567,218 @@ box.el.addEventListener("filebox:change", (e) => console.log(e.detail.front, e.d
       [".y-nav__burger + .y-nav__sheet", "element", "Mobile menu (under 860px). Burger's aria-controls names the sheet id."],
       [".is-scrolled", "state", "Compact glass look. Added automatically with data-nav-fixed."],
       ["yeet.nav(el)", "js", "Init a navbar added after page load."],
+    ],
+  },
+  {
+    id: "clocks", name: "Clocks", emoji: "🕰️", category: "Widgets", tile: "wide", color: "orange",
+    desc: "Live analog, world and digital clocks for any time zone. Drop in an empty element with data-tz and yeet.init() draws the dial, ticks the second hand with a springy GSAP snap and keeps the date, weekday and UTC offset right. One shared ticker runs every clock, and off-screen clocks sleep.",
+    mini: `<div style="display:flex;gap:10px;align-items:center">
+      <div class="y-wgt" style="--u:50px"><div class="y-cell y-cell--big"><div class="y-aclock" data-numbers data-label="Amsterdam" data-tz="Europe/Amsterdam"></div></div></div>
+      <div class="y-wgt" style="--u:50px"><div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div><div class="y-cell y-cell--w2 y-cell--red y-dclock" data-tz="Europe/Amsterdam"></div></div>
+    </div>`,
+    groups: [
+      { label: "Analog", hint: "data-tz = any IANA zone", html: `
+<div class="y-wgt">
+  <div class="y-cell y-cell--big">
+    <div class="y-aclock" data-tz="Europe/Amsterdam" data-label="Amsterdam" data-numbers data-date></div>
+  </div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--red y-cell--round"><div class="y-aclock y-aclock--ink" data-tz="Europe/Amsterdam" data-label="AMS" data-numbers></div></div>
+  <div class="y-cell y-cell--orange y-dday" data-tz="Europe/Amsterdam"></div>
+  <div class="y-cell y-cell--w2 y-cell--blue y-stat" data-count="7398"></div>
+</div>` },
+      { label: "World clock", hint: "code · date · offset · mini dial", html: `
+<div class="y-wgt">
+  <div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div>
+  <div class="y-cell y-cell--w2 y-cell--red y-wclock" data-tz="America/New_York" data-code="NYC" data-hand="ink"></div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--w2 y-cell--navy y-wclock" data-tz="Europe/Amsterdam" data-code="AMS" data-hand="red"></div>
+  <div class="y-cell y-cell--w2 y-wclock" data-tz="Asia/Tokyo" data-code="TYO" data-hand="red"></div>
+</div>` },
+      { label: "Digital & dates", hint: "colon blinks · updates at midnight", html: `
+<div class="y-wgt" style="--shell:#2f6bff">
+  <div class="y-cell y-cell--w2 y-dclock"></div>
+  <div class="y-cell y-cell--orange y-dday"></div>
+  <div class="y-cell y-cell--navy y-cell--round y-temp">18°</div>
+</div>
+<div class="y-wgt" style="--shell:#d9d9d9">
+  <div class="y-cell y-cell--w2 y-cell--red y-dclock" data-tz="Europe/London"></div>
+  <div class="y-cell y-dday" data-tz="Europe/London"></div>
+  <div class="y-cell y-cell--yellow y-cell--round y-temp">24°</div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div>
+  <div class="y-cell y-cell--w2 y-dbig"></div>
+</div>` },
+    ],
+    extraCode: [{ lang: "js", label: "control it from JS", src: `
+yeet.init();                        // draws every clock on the page
+yeet.widgets(newEl);                // clocks added later
+yeet.zoned(el);                     // { hour, minute, second, weekday, day, month, year, offset } for el's data-tz
+yeet.aclock(document.querySelector("#myDial")); // one analog clock` }],
+    api: [
+      [".y-wgt / .y-wgt--wide", "class", "Widget shell: a 2×2 (or 4×2) grid of squares. Everything inside scales from --u."],
+      ["--u", "css var", "Size of one grid square (default 84px). Set it on a widget or board to scale the whole thing."],
+      ["--shell", "css var", "Shell color behind the cells (default near-black)."],
+      [".y-cell", "class", "A cell. Spans: --w2 (2 wide), --h2 (2 tall), --big (2×2), --round (circle)."],
+      [".y-cell--{color}", "modifier", "Cell colors: sky, orange, red, yellow, grey, white, steel, navy, blue, black, lime, pink, purple. Text color follows automatically. Or set --c and --ink yourself."],
+      [".y-aclock", "class", "Analog clock. Add data-numbers (60/15/30/45), data-label, data-date (date window). .y-aclock--red / --ink change the hands, or set --hand."],
+      [".y-wclock", "class", "World-clock cell: city code, weekday + date, UTC offset and a mini dial. data-code=\"NYC\", data-hand=\"red|ink\"."],
+      [".y-dclock", "class", "Digital HH:MM with a blinking colon. data-format=\"12\" for 12-hour, add data-ampm to show am/pm."],
+      [".y-dday / .y-dbig", "class", "Weekday + day (Mon 26) / big day + month + year."],
+      ["data-tz", "attribute", "Any IANA time zone (\"Asia/Tokyo\"). Leave it off for the viewer's local time."],
+      ["data-time=\"10:08:30\"", "attribute", "Freeze a clock at a set time (mockups, screenshots)."],
+    ],
+  },
+  {
+    id: "weather", name: "Weather", emoji: "⛅", category: "Widgets", color: "yellow",
+    desc: "Weather cards, sunrise / sunset, wind and temperature dots in the same chunky widget style. Bring your own data from any weather API: write the numbers in, and the icons come from one attribute.",
+    mini: `<div class="y-wgt" style="--u:50px"><div class="y-cell y-cell--big y-cell--yellow"><div class="y-wx__sky"><i class="y-wi" data-wi="sun"></i>Clear sky</div><div class="y-wx__temp">24<sup>°</sup></div><div class="y-wx__city">Los Angeles</div></div></div>`,
+    groups: [
+      { label: "Weather cards", html: `
+<div class="y-wgt">
+  <div class="y-cell y-cell--big y-cell--yellow">
+    <div class="y-wx__sky"><i class="y-wi" data-wi="sun"></i>Clear sky</div>
+    <div class="y-wx__temp">24<sup>°</sup></div>
+    <div class="y-wx__city">Los Angeles</div>
+  </div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--big">
+    <div class="y-wx__sky"><i class="y-wi" data-wi="partly"></i>Partly cloudy</div>
+    <div class="y-wx__temp">23<sup>°</sup></div>
+    <div class="y-wx__city">Hong Kong</div>
+  </div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--big y-cell--steel">
+    <div class="y-wx__sky"><i class="y-wi" data-wi="cloud"></i>Overcast</div>
+    <div class="y-wx__temp">16<sup>°</sup></div>
+    <div class="y-wx__city">Bogotá</div>
+  </div>
+</div>` },
+      { label: "Sun, wind & temp", hint: "data-deg turns the wind arrow", html: `
+<div class="y-wgt">
+  <div class="y-cell y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">22:04</span></div>
+  <div class="y-cell y-cell--orange y-sun"><i class="y-wi" data-wi="sunrise"></i><span class="y-sun__t">06:12</span></div>
+  <div class="y-cell y-wind" data-deg="0"><i class="y-wi" data-wi="nav"></i><span class="y-wind__t">23 mp/h</span></div>
+  <div class="y-cell y-cell--yellow y-cell--round y-temp">12°</div>
+</div>
+<div class="y-wgt">
+  <div class="y-cell y-cell--navy y-wind" data-deg="120"><i class="y-wi" data-wi="nav"></i><span class="y-wind__t">42 km/h</span></div>
+  <div class="y-cell y-cell--sky y-cell--round y-temp">22°</div>
+  <div class="y-cell y-cell--pink y-sun"><i class="y-wi" data-wi="moon"></i><span class="y-sun__t">Night</span></div>
+  <div class="y-cell y-cell--white y-sun"><i class="y-wi" data-wi="rain"></i><span class="y-sun__t">80%</span></div>
+</div>` },
+    ],
+    extraCode: [{ lang: "js", label: "fill it from a weather API", src: `
+const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.01&current=temperature_2m");
+const { current } = await res.json();
+document.querySelector(".y-wx__temp").innerHTML = \`\${Math.round(current.temperature_2m)}<sup>°</sup>\`;` }],
+    api: [
+      [".y-wx__sky / __temp / __city", "element", "Condition line (icon + text), the big temperature (use <sup>° </sup>), and the place, pinned to the bottom."],
+      [".y-wi[data-wi]", "element", "Icon, drawn by yeet.init(): sun, cloud, partly, rain, moon, sunrise, sunset, nav. Mono icons use the cell's text color."],
+      [".y-sun", "class", "Icon on top, time underneath (.y-sun__t)."],
+      [".y-wind[data-deg]", "class", "Wind arrow pointing data-deg degrees, speed in .y-wind__t. Wiggles on hover."],
+      [".y-temp + .y-cell--round", "class", "Round temperature dot."],
+      ["yeet.weatherIcons", "js", "The SVG paths, if you want the icons elsewhere."],
+    ],
+  },
+  {
+    id: "widget-board", name: "Widget Board", emoji: "🧩", category: "Widgets", tile: "wide", color: "blue",
+    desc: "Mix clocks, weather and big counters into a home-screen style board. Small widgets take one slot, wide ones take two, and the board wraps to fit. Widgets fly in when it scrolls into view, numbers count up, and hovering lifts a widget onto a lime shadow.",
+    mini: `<div class="y-wgt y-wgt--wide" style="--u:46px">
+      <div class="y-cell y-cell--big y-cell--sky"><div class="y-wx__sky"><i class="y-wi" data-wi="partly"></i>Few clouds</div><div class="y-wx__temp">28<sup>°</sup></div><div class="y-wx__city">New York City</div></div>
+      <div class="y-cell y-cell--orange y-dday" data-tz="America/New_York"></div>
+      <div class="y-cell y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">22:04</span></div>
+      <div class="y-cell y-cell--w2 y-cell--red y-wclock" data-tz="America/New_York" data-code="NYC" data-hand="ink"></div>
+    </div>`,
+    groups: [
+      { label: "Board", hint: "hover a widget · resize the window", layout: "block", html: `
+<div class="y-wgt-board">
+  <div class="y-wgt y-wgt--wide">
+    <div class="y-cell y-cell--big y-cell--sky">
+      <div class="y-wx__sky"><i class="y-wi" data-wi="partly"></i>Few clouds</div>
+      <div class="y-wx__temp">28<sup>°</sup></div>
+      <div class="y-wx__city">New York City</div>
+    </div>
+    <div class="y-cell y-cell--orange y-dday" data-tz="America/New_York"></div>
+    <div class="y-cell y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">22:04</span></div>
+    <div class="y-cell y-cell--w2 y-cell--red y-wclock" data-tz="America/New_York" data-code="NYC" data-hand="ink"></div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div>
+    <div class="y-cell y-wind" data-deg="0"><i class="y-wi" data-wi="nav"></i><span class="y-wind__t">23 mp/h</span></div>
+    <div class="y-cell y-cell--yellow y-cell--round y-temp">12°</div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--big y-cell--yellow">
+      <div class="y-wx__sky"><i class="y-wi" data-wi="sun"></i>Clear sky</div>
+      <div class="y-wx__temp">24<sup>°</sup></div>
+      <div class="y-wx__city">Los Angeles</div>
+    </div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--big"><div class="y-aclock" data-tz="Europe/Amsterdam" data-label="Amsterdam" data-numbers data-date></div></div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--big">
+      <div class="y-wx__sky"><i class="y-wi" data-wi="partly"></i>Partly cloudy</div>
+      <div class="y-wx__temp">23<sup>°</sup></div>
+      <div class="y-wx__city">Hong Kong</div>
+    </div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--w2 y-cell--orange y-stat y-stat--sm" data-count="7.6" data-decimals="1" data-unit="Km"></div>
+    <div class="y-cell y-cell--w2 y-cell--red y-stat" data-count="10139"></div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--w2 y-cell--navy y-wclock" data-tz="Europe/Amsterdam" data-code="AMS" data-hand="red"></div>
+    <div class="y-cell y-cell--orange y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">17:54</span></div>
+    <div class="y-cell y-cell--sky y-cell--round y-temp">22°</div>
+  </div>
+  <div class="y-wgt" style="--shell:#2f6bff">
+    <div class="y-cell y-cell--w2 y-dclock"></div>
+    <div class="y-cell y-cell--orange y-dday"></div>
+    <div class="y-cell y-cell--navy y-cell--round y-temp">18°</div>
+  </div>
+  <div class="y-wgt y-wgt--wide">
+    <div class="y-cell y-cell--big y-cell--steel">
+      <div class="y-wx__sky"><i class="y-wi" data-wi="cloud"></i>Overcast</div>
+      <div class="y-wx__temp">16<sup>°</sup></div>
+      <div class="y-wx__city">Bogotá</div>
+    </div>
+    <div class="y-cell"><div class="y-aclock" data-tz="America/Bogota" data-label="BOG"></div></div>
+    <div class="y-cell y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">17:54</span></div>
+    <div class="y-cell y-cell--w2 y-stat" data-count="10139"></div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--red y-cell--round"><div class="y-aclock y-aclock--ink" data-tz="Europe/Amsterdam" data-numbers data-label="AMS"></div></div>
+    <div class="y-cell y-cell--orange y-dday" data-tz="Europe/Amsterdam"></div>
+    <div class="y-cell y-cell--w2 y-cell--blue y-stat" data-count="7398"></div>
+  </div>
+  <div class="y-wgt">
+    <div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div>
+    <div class="y-cell y-cell--w2 y-dbig" data-tz="America/New_York"></div>
+  </div>
+  <div class="y-wgt" style="--shell:#ff8a1f">
+    <div class="y-cell y-cell--w2 y-cell--blue y-wclock" data-tz="Europe/Amsterdam" data-code="AMS"></div>
+    <div class="y-cell y-cell--w2 y-stat" data-count="8647"></div>
+  </div>
+  <div class="y-wgt" style="--shell:#d9d9d9">
+    <div class="y-cell y-cell--w2 y-cell--red y-dclock" data-tz="Europe/Amsterdam"></div>
+    <div class="y-cell y-dday" data-tz="Europe/Amsterdam"></div>
+    <div class="y-cell y-cell--yellow y-cell--round y-temp">24°</div>
+  </div>
+</div>` },
+    ],
+    api: [
+      [".y-wgt-board", "class", "Responsive board. Small widgets take one slot, .y-wgt--wide takes two. --u scales with the screen (set it to override)."],
+      [".y-stat[data-count]", "class", "Big number that counts up when it scrolls into view. data-decimals, data-sep (default \".\"), data-dec (default \",\"), data-unit (\"Km\"). .y-stat--sm for a smaller size."],
+      ["yeet.formatNum(v, opts)", "js", "Same number formatting for your own code. opts = { decimals, sep, dec }: 10139 → \"10.139\"."],
+      [".y-wgt:hover", "state", "Lifts and tilts onto a lime offset shadow."],
     ],
   },
 ];
