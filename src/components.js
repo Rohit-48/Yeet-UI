@@ -8,6 +8,7 @@ import { createSearch } from "./search.js";
 import { sound } from "./sound.js";
 import { widgets, aclock, zoned, formatNum, ICONS as weatherIcons } from "./widgets.js";
 import { recorder, blueprint } from "./recorder.js";
+import { pos, receiptHTML, bag, productHTML } from "./pos.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -800,6 +801,17 @@ function init(root = document) {
   widgets(root);
   $$("[data-recorder]", root).forEach(recorder);
   $$(".y-blueprint", root).forEach(blueprint);
+  $$("[data-pos]", root).forEach((el) => pos(el));
+  $$("[data-bag]", root).forEach((el) => bag(el));
+  // <button data-pos-add="#pos" data-name="Hoodie" data-price="48"> / <button data-pos-checkout="#pos">
+  $$("[data-pos-add]", root).forEach((b) => b.addEventListener("click", () => {
+    const m = document.querySelector(b.dataset.posAdd);
+    if (m) pos(m).add({ name: b.dataset.name, price: b.dataset.price, qty: b.dataset.qty, was: b.dataset.was });
+  }));
+  $$("[data-pos-checkout]", root).forEach((b) => b.addEventListener("click", () => {
+    const m = document.querySelector(b.dataset.posCheckout);
+    if (m) pos(m).checkout();
+  }));
   // demo helpers: <button data-filebox-add="#box"> / data-filebox-remove / data-filebox-next
   const presets = [["Branding", "logos + type"], ["Motion", "gsap studies"], ["3D", "blender bits"], ["UX Audit", "client work"], ["Photos", "film scans"], ["Zines", "print"], ["Web", "sites"], ["Sketches", "napkin ideas"]];
   $$("[data-filebox-add]", root).forEach((b) => b.addEventListener("click", () => {
@@ -883,5 +895,5 @@ function init(root = document) {
     }));
 }
 
-export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, markSlots, sound, widgets, aclock, zoned, formatNum, weatherIcons, recorder, blueprint, search: createSearch };
+export const yeet = { init, toast, openModal, closeModal, magnetic, tilt, nav, filebox, folderHTML, folderItemsHTML, markSlots, sound, widgets, aclock, zoned, formatNum, weatherIcons, recorder, blueprint, pos, receiptHTML, bag, productHTML, search: createSearch };
 window.yeet = yeet;

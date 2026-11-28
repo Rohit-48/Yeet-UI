@@ -7,6 +7,7 @@ import "./styles/tokens.css";
 import "./styles/components.css";
 import "./styles/widgets.css";
 import "./styles/recorder.css";
+import "./styles/pos.css";
 import "./styles/site.css";
 import "./styles/pages.css";
 import gsap from "gsap";

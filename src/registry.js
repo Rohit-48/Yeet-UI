@@ -833,6 +833,145 @@ rec.el.addEventListener("recorder:saved", (e) => {
       [".y-callout[data-target]", "element", "Label in the stage. A line is drawn from it to the target selector. data-side=\"right\", data-tx / data-ty (0-1) pick the spot on the target."],
     ],
   },
+  {
+    id: "receipt-machine", name: "Receipt Machine", emoji: "🧾", category: "Widgets", tile: "tall", color: "orange",
+    desc: "A chunky POS terminal for checkout and receipt pages. Items beep onto the amber screen, PAY runs a fingerprint scan, cha-chings when approved, then the receipt feeds out of the slot line by line with thermal-printer sounds. Tap the receipt to tear it off into a tray (or it tears itself). The keypad works too: type an amount, # adds it, PAY charges it. All sounds are synthesized, no audio files.",
+    mini: `<div class="y-pos" data-pos style="--w:150px"></div>`,
+    groups: [
+      { label: "Receipt page", hint: "add stuff → Checkout (or PAY / Enter on the machine) · tap the receipt to tear", layout: "block", html: `
+<div class="y-checkout">
+  <div class="y-cart" data-bag="#shopPos">
+    <!-- your products: copy a line, change data-name / data-price (data-emoji, data-was optional) -->
+    <h3 class="y-cart__title">your bag 🛍️</h3>
+    <button class="y-cart__item" data-name="Oversized Hoodie" data-price="48" data-emoji="🧥"><span>🧥 Oversized Hoodie</span><b>$48</b></button>
+    <button class="y-cart__item" data-name="Chunky Sneakers" data-price="120" data-emoji="👟"><span>👟 Chunky Sneakers</span><b>$120</b></button>
+    <button class="y-cart__item" data-name="Bucket Hat" data-price="22.5" data-emoji="🧢"><span>🧢 Bucket Hat</span><b>$22.50</b></button>
+    <button class="y-cart__item" data-name="Iced Oat Latte" data-price="6.25" data-emoji="🧋"><span>🧋 Iced Oat Latte</span><b>$6.25</b></button>
+    <button class="y-btn y-btn--pink" data-pos-checkout="#shopPos" style="width:100%;margin-top:.5rem">Checkout →</button>
+  </div>
+  <div class="y-pos" id="shopPos" style="--w:320px" data-pos data-store="Yeet/Shop" data-tray="#receiptTray"></div>
+  <div class="y-receipt-tray" id="receiptTray"></div>
+</div>` },
+      { label: "Café · tip on screen", hint: "PAY → pick a tip with 1 / 2 / 3 (0 = none) · kraft paper", layout: "block", html: `
+<div class="y-checkout">
+  <div class="y-cart" data-bag="#cafePos">
+    <!-- your products: copy a line, change data-name / data-price (data-emoji, data-was optional) -->
+    <h3 class="y-cart__title">order for Sam ☕</h3>
+    <button class="y-cart__item" data-name="Iced Oat Latte" data-price="5.75" data-emoji="🧋"><span>🧋 Iced Oat Latte</span><b>$5.75</b></button>
+    <button class="y-cart__item" data-name="Matcha Cloud" data-price="6.25" data-emoji="🍵"><span>🍵 Matcha Cloud</span><b>$6.25</b></button>
+    <button class="y-cart__item" data-name="Almond Croissant" data-price="4.5" data-emoji="🥐"><span>🥐 Almond Croissant</span><b>$4.50</b></button>
+    <button class="y-btn" data-pos-checkout="#cafePos" style="width:100%;margin-top:.5rem;--bg:#7a4a2a;color:#fbefe0">Pay →</button>
+  </div>
+  <div class="y-pos" id="cafePos" data-pos data-theme="cafe" data-tray="#cafeTray" style="--w:300px"></div>
+  <div class="y-receipt-tray" id="cafeTray"></div>
+</div>` },
+      { label: "Restaurant · split the bill", hint: "tip prompt + split 2 ways on the receipt", layout: "block", html: `
+<div class="y-checkout">
+  <div class="y-cart" data-bag="#dinePos">
+    <!-- your products: copy a line, change data-name / data-price (data-emoji, data-was optional) -->
+    <h3 class="y-cart__title">table 12 🍜</h3>
+    <button class="y-cart__item" data-name="Spicy Miso Ramen" data-price="17" data-emoji="🍜"><span>🍜 Spicy Miso Ramen</span><b>$17</b></button>
+    <button class="y-cart__item" data-name="Gyoza (6)" data-price="9" data-emoji="🥟"><span>🥟 Gyoza (6)</span><b>$9</b></button>
+    <button class="y-cart__item" data-name="Yuzu Soda" data-price="4.5" data-emoji="🍋"><span>🍋 Yuzu Soda</span><b>$4.50</b></button>
+    <button class="y-btn" data-pos-checkout="#dinePos" style="width:100%;margin-top:.5rem;--bg:var(--y-pink)">Get the bill →</button>
+  </div>
+  <div class="y-pos" id="dinePos" data-pos data-theme="restaurant" data-split="2" data-tray="#dineTray" style="--w:300px"></div>
+  <div class="y-receipt-tray" id="dineTray"></div>
+</div>` },
+      { label: "Grocery · member deals", hint: "unit prices + you-saved line (data-was on items)", layout: "block", html: `
+<div class="y-checkout">
+  <div class="y-cart" data-bag="#groPos">
+    <!-- your products: copy a line, change data-name / data-price (data-emoji, data-was optional) -->
+    <h3 class="y-cart__title">weekly shop 🛒</h3>
+    <button class="y-cart__item" data-name="Avocado" data-price="1.25" data-was="1.75" data-emoji="🥑"><span>🥑 Avocado <s style="opacity:.5">$1.75</s></span><b>$1.25</b></button>
+    <button class="y-cart__item" data-name="Sourdough" data-price="5.5" data-emoji="🍞"><span>🍞 Sourdough</span><b>$5.50</b></button>
+    <button class="y-cart__item" data-name="Oat Milk 1L" data-price="2.99" data-was="3.49" data-emoji="🥛"><span>🥛 Oat Milk 1L <s style="opacity:.5">$3.49</s></span><b>$2.99</b></button>
+    <button class="y-cart__item" data-name="Strawberries" data-price="3.8" data-emoji="🍓"><span>🍓 Strawberries</span><b>$3.80</b></button>
+    <button class="y-btn" data-pos-checkout="#groPos" style="--bg:var(--y-lime);width:100%;margin-top:.5rem">Checkout →</button>
+  </div>
+  <div class="y-pos" id="groPos" data-pos data-theme="grocery" data-tray="#groTray" style="--w:300px"></div>
+  <div class="y-receipt-tray" id="groTray"></div>
+</div>` },
+      { label: "Event tickets · stub + seats", hint: "prints a ticket: ADMIT n, seats, gate, perforation, QR-style code", layout: "block", html: `
+<div class="y-checkout">
+  <div class="y-cart" data-bag="#gigPos">
+    <!-- your products: copy a line, change data-name / data-price (data-emoji, data-was optional) -->
+    <h3 class="y-cart__title">Night Drive Tour 🎟️</h3>
+    <button class="y-cart__item" data-name="General Admission" data-price="35" data-emoji="🎫"><span>🎫 General Admission</span><b>$35</b></button>
+    <button class="y-cart__item" data-name="Front Row" data-price="80" data-emoji="🔥"><span>🔥 Front Row</span><b>$80</b></button>
+    <button class="y-cart__item" data-name="Tour Tee" data-price="28" data-emoji="👕"><span>👕 Tour Tee</span><b>$28</b></button>
+    <button class="y-btn" data-pos-checkout="#gigPos" style="--bg:var(--y-purple);color:#fff;width:100%;margin-top:.5rem">Get tickets →</button>
+  </div>
+  <div class="y-pos" id="gigPos" data-pos data-theme="ticket" data-tray="#gigTray" style="--w:300px"></div>
+  <div class="y-receipt-tray" id="gigTray"></div>
+</div>` },
+      { label: "Static receipt", hint: "for order-confirmation pages · yeet.receiptHTML(data)", html: `
+<div class="y-receipt-wrap" style="width:250px">
+  <div class="y-receipt">
+    <div class="y-receipt__head">
+      <span class="y-receipt__store">✦ Yeet/Shop ✦</span>
+      <span class="y-receipt__muted">2026-11-28 14:05 · #4242</span>
+    </div>
+    <hr>
+    <div class="y-receipt__row"><span>2× Oversized Hoodie</span><span>$96.00</span></div>
+    <div class="y-receipt__row"><span>Bucket Hat</span><span>$22.50</span></div>
+    <hr>
+    <div class="y-receipt__row y-receipt__total"><span>TOTAL</span><span>$127.98</span></div>
+    <div class="y-receipt__row"><span>TAP · CONTACTLESS</span><span class="y-receipt__stamp">PAID</span></div>
+    <div class="y-receipt__foot">thank u, bestie ♡</div>
+  </div>
+</div>` },
+    ],
+    extraCode: [{ lang: "js", label: "your own products from JS / an API", src: `
+const bag = yeet.bag(document.querySelector("[data-bag]"));
+const products = await fetch("/api/products").then((r) => r.json());
+bag.setProducts(products.map((p) => ({
+  name: p.title,          // shown in the bag + on the receipt
+  price: p.price,         // number
+  emoji: p.emoji,         // optional
+  was: p.compareAtPrice,  // optional: prints MEMBER DEAL + YOU SAVED
+})));` }, { lang: "js", label: "control it from JS", src: `
+const pos = yeet.pos(document.querySelector("#shopPos"));
+pos.add({ name: "Oversized Hoodie", price: 48, qty: 2 });
+const receipt = await pos.checkout(); // resolves once the paper is out
+pos.tear();     // rip it off (flies into data-tray if set)
+pos.reprint();  // prints a COPY of the last receipt
+pos.setQty("Oversized Hoodie", 3); // 0 removes the line
+pos.remove("Bucket Hat");
+pos.clear();    // empty the cart
+
+pos.el.addEventListener("pos:printed", (e) => {
+  console.log(e.detail.receipt); // { no, items, subtotal, tax, total, date, ... }
+});
+
+// render a receipt anywhere without the machine:
+document.querySelector("#order").innerHTML = yeet.receiptHTML(receipt);` }],
+    api: [
+      ["[data-pos]", "attribute", "Root (.y-pos). Leave it empty: yeet.init() builds the screen, keypad, PAY key, fingerprint pad and paper slot."],
+      ["data-tray", "attribute", "Selector of a .y-receipt-tray. Torn receipts fly into it and pile up (newest on top)."],
+      ["data-theme", "attribute", "Use-case preset: cafe (latte casing, tip prompt, kraft paper), restaurant (black casing, tip + split bill), grocery (green, unit prices, member savings), ticket (purple, ADMIT n stub with seats + QR-style code). Leave off for the streetwear default."],
+      ["data-tip=\"0.1,0.15,0.2\"", "attribute", "Ask for a tip on the screen after PAY: 1 / 2 / 3 pick, 0 = none, PAY = the middle one. data-tip=\"\" turns a preset's tip off."],
+      ["data-split", "attribute", "Adds a SPLIT n WAYS line with the per-person amount."],
+      ["data-was", "attribute", "On a data-pos-add button: the old price. Prints a MEMBER DEAL line and YOU SAVED total."],
+      ["data-paper", "attribute", "Receipt paper: kraft or ticket (presets set it for you)."],
+      ["data-store / data-address / data-footer", "attribute", "Text printed on the receipt."],
+      ["data-currency / data-locale", "attribute", "Money format (default USD / en-US)."],
+      ["data-tax", "attribute", "Tax rate, e.g. 0.08 (default). 0 hides the tax line."],
+      ["data-auto-tear", "attribute", "Seconds before a printed receipt tears itself into the tray (default 2.2, 0 = wait for a tap)."],
+      ["data-pos-add=\"#pos\"", "attribute", "On any button: adds data-name / data-price (/ data-qty) to that machine."],
+      ["data-pos-checkout=\"#pos\"", "attribute", "On any button: starts checkout."],
+      [".y-cart[data-bag=\"#pos\"]", "class", "Editable shopping bag tied to a machine. Your products are .y-cart__item buttons (data-name, data-price, optional data-emoji / data-was). Shoppers tap to add, then change qty with − / + or ✕ to remove; the machine total and receipt follow."],
+      ["data-products='[…]'", "attribute", "On the bag: a JSON list of products to render instead of writing the buttons by hand."],
+      ["yeet.bag(el, { products })", "js", "Same from JS. bag.setProducts([...]) swaps the catalog later (e.g. after a fetch)."],
+      ["pos.setQty(name, n) / pos.remove(name)", "js", "Edit the cart from your own UI. Every change fires pos:change with { cart, subtotal }."],
+      ["--w / --shell / --accent / --key", "css var", "Size, casing color, PAY key + brand color, key color."],
+      ["Keyboard", "attribute", "With focus on the machine: digits type an amount, # adds it, Enter pays, Backspace deletes, Esc clears."],
+      ["pos:add / checkout / printed / tear / clear", "event", "detail has the cart or the receipt object."],
+      ["yeet.pos(el)", "js", "Returns { add, checkout, reprint, tear, clear, press, cart, subtotal, last }."],
+      [".y-receipt / .y-receipt-wrap", "class", "Zig-zag paper receipt (wrap adds the shadow). Parts: __head, __store, __row, __total, __stamp, __barcode, __foot."],
+      ["yeet.receiptHTML(data)", "js", "Builds receipt markup from { no, store, items, subtotal, tax, total, date, ... }."],
+    ],
+  },
 ];
 
 export const colors = ["ink", "paper", "white", "lime", "pink", "blue", "orange", "purple", "yellow", "mint", "muted"];

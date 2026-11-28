@@ -85,6 +85,51 @@ const voices = {
       o.connect(f).connect(g).connect(master);
     });
   },
+  // thermal printer: one line of feed (buzzy head + stepper motor)
+  print(t) {
+    const n = noise(t, 0.06), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    f.type = "bandpass"; f.frequency.value = 2600 + Math.random() * 900; f.Q.value = 1.2;
+    env(g, t, 0.32, 0.004, 0.05);
+    n.connect(f).connect(g).connect(master);
+    const o = osc("square", t, 0.05), lp = ctx.createBiquadFilter(), g2 = ctx.createGain();
+    o.frequency.value = 118 + Math.random() * 20;
+    lp.type = "lowpass"; lp.frequency.value = 900;
+    env(g2, t, 0.12, 0.003, 0.045);
+    o.connect(lp).connect(g2).connect(master);
+  },
+  // POS key beep
+  beep(t, { pitch = 1 } = {}) {
+    const o = osc("sine", t, 0.13), g = ctx.createGain();
+    o.frequency.value = 1760 * pitch;
+    env(g, t, 0.3, 0.004, 0.12);
+    o.connect(g).connect(master);
+  },
+  // payment approved: drawer thunk + two bells
+  chaching(t) {
+    const n = noise(t, 0.09), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    f.type = "lowpass"; f.frequency.value = 700;
+    env(g, t, 0.45, 0.003, 0.09);
+    n.connect(f).connect(g).connect(master);
+    [[1318.5, 0.08], [1975.5, 0.2]].forEach(([fr, dt]) => {
+      [1, 2.76].forEach((h, i) => {
+        const o = osc("sine", t + dt, 0.9), gg = ctx.createGain();
+        o.frequency.value = fr * h;
+        env(gg, t + dt, i ? 0.06 : 0.3, 0.004, 0.85);
+        o.connect(gg).connect(master);
+      });
+    });
+  },
+  // paper tear: crackly high-passed noise sweep
+  tear(t) {
+    const n = noise(t, 0.26), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    f.type = "highpass";
+    f.frequency.setValueAtTime(5200, t);
+    f.frequency.exponentialRampToValueAtTime(1400, t + 0.22);
+    g.gain.setValueAtTime(0.0001, t);
+    for (let i = 0; i < 9; i++) g.gain.setValueAtTime(0.18 + Math.random() * 0.4, t + i * 0.025);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
+    n.connect(f).connect(g).connect(master);
+  },
   // tiny UI tick
   tick(t) {
     const o = osc("triangle", t, 0.05), g = ctx.createGain();
