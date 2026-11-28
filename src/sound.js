@@ -119,6 +119,9 @@ const voices = {
   },
 };
 
+/** The shared AudioContext (created/resumed on first call; call it from a user gesture). */
+export const audioContext = () => audio();
+
 export const sound = {
   get muted() { try { return localStorage.getItem(KEY) === "off"; } catch { return false; } },
   set muted(v) { try { localStorage.setItem(KEY, v ? "off" : "on"); } catch { /* ignore */ } document.dispatchEvent(new CustomEvent("yeet:sound", { detail: { muted: !!v } })); },

@@ -781,6 +781,58 @@ document.querySelector(".y-wx__temp").innerHTML = \`\${Math.round(current.temper
       [".y-wgt:hover", "state", "Lifts and tilts onto a lime offset shadow."],
     ],
   },
+  {
+    id: "recorder", name: "Field Recorder", emoji: "📼", category: "Widgets", tile: "tall", color: "blue",
+    desc: "A chunky tape recorder that actually records. Hit the orange button to record from the mic, ▶ to play it back, ◀◀ to rewind. The reels spin at real tape speed (the full reel turns slower), the amber screen draws the live waveform, and the tape winds from one reel to the other. No mic or permission denied? It records a demo signal and plays a lo-fi synth tape instead. Comes with a blueprint spec-sheet wrapper with auto-drawn callout lines.",
+    mini: `<div class="y-rec" data-recorder style="--w:150px"></div>`,
+    groups: [
+      { label: "Recorder", hint: "● record (asks for the mic) · ▶ play · ◀◀ rewind", html: `
+<div class="y-rec" data-recorder></div>
+<div class="y-rec" data-recorder data-label="FX-02" style="--w:220px;--body:#cfd6dd;--body-hi:#eef2f5;--body-lo:#9ea9b4;--amber:#3d5afe;--glow:#8ea3ff"></div>` },
+      { label: "Blueprint sheet", hint: "callout lines follow the targets on resize", layout: "block", html: `
+<figure class="y-blueprint">
+  <header class="y-blueprint__head">
+    <h3 class="y-blueprint__title">Archive</h3>
+    <p class="y-blueprint__sub">Field recorder</p>
+    <i class="y-blueprint__planet"></i>
+  </header>
+  <div class="y-blueprint__stage">
+    <div class="y-rec" data-recorder></div>
+    <span class="y-callout" data-target=".y-rec__window" data-tx="0.25" style="left:0;top:16%">Data reels</span>
+    <span class="y-callout" data-target=".y-rec__keys" data-tx="0.2" style="left:0;top:64%">Transport keys</span>
+    <span class="y-callout" data-side="right" data-target=".y-rec__display" data-tx="0.85" style="right:0;top:40%">Waveform display</span>
+    <span class="y-callout" data-side="right" data-target=".y-rec__record" style="right:0;top:72%">Record button</span>
+  </div>
+  <figcaption class="y-blueprint__foot">Explorer equipment / No. 010</figcaption>
+</figure>` },
+    ],
+    extraCode: [{ lang: "js", label: "control it from JS", src: `
+const rec = yeet.recorder(document.querySelector("[data-recorder]"));
+rec.record();   // start (asks for mic) · call again to stop
+rec.play();     // play / pause the take
+rec.rewind();   // wind back to 00:00
+rec.stop();
+rec.mode;       // "ready" | "recording" | "playing" | "paused" | "rewinding"
+
+// grab the recording (a webm/ogg Blob) when a take finishes
+rec.el.addEventListener("recorder:saved", (e) => {
+  const { blob, url, duration } = e.detail;
+  upload(blob);  // or <a href={url} download>
+});` }],
+    api: [
+      ["[data-recorder]", "attribute", "Root (.y-rec). Leave it empty: yeet.init() builds the handle, reels, screen and keys."],
+      ["--w", "css var", "Device width (default 320px). Everything inside scales with it."],
+      ["--body / --body-hi / --body-lo", "css var", "Casing colors (mid, highlight, shadow)."],
+      ["--amber / --glow", "css var", "Record button + screen color."],
+      ["data-label", "attribute", "Model text printed next to the grille (default ARC-010)."],
+      ["data-max", "attribute", "Max seconds per take (default 30). Recording stops itself after that."],
+      [".is-recording / .is-playing", "state", "Set on the root. Record button glows, LED blinks."],
+      ["recorder:saved", "event", "Fired when a mic take is ready. detail = { blob, url, duration }. Also recorder:recording / playing / paused / rewinding / ready."],
+      ["yeet.recorder(el)", "js", "Returns { record, play, pause, stop, rewind, mode, position, clip }."],
+      [".y-blueprint", "class", "Blueprint spec sheet: __head (__title, __sub, __planet), __stage, __foot."],
+      [".y-callout[data-target]", "element", "Label in the stage. A line is drawn from it to the target selector. data-side=\"right\", data-tx / data-ty (0-1) pick the spot on the target."],
+    ],
+  },
 ];
 
 export const colors = ["ink", "paper", "white", "lime", "pink", "blue", "orange", "purple", "yellow", "mint", "muted"];
