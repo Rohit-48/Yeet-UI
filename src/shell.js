@@ -8,6 +8,7 @@ import "./styles/components.css";
 import "./styles/widgets.css";
 import "./styles/recorder.css";
 import "./styles/pos.css";
+import "./styles/kbd.css";
 import "./styles/site.css";
 import "./styles/pages.css";
 import gsap from "gsap";

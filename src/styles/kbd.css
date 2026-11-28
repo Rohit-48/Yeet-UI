@@ -1,0 +1,208 @@
+/* ============================================
+   YEET/UI — Mechanical keyboard + typing test
+   Sized in cqw: set --w and the whole board scales.
+   ============================================ */
+.y-kbd {
+  --w: 760px;
+  --case: #17161b; --case-hi: #2b2a31; --plate: #0d0c10; --line: #0b0a0d;
+  --alpha: #fff8ec; --alpha-ink: #18171c;
+  --mod: #c6ff3d; --mod-ink: #18171c;
+  --acc1: #ff4fd8; --acc2: #ff7a1a; --acc-ink: #18171c;
+  --space: #9b5cff; --space-ink: #fff;
+  --screen: #0e1a10; --screen-ink: #b7ff6a;
+  --knob: #d9d9de;
+  width: var(--w);
+  max-width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.y-kbd *, .y-kbd *::before, .y-kbd *::after { box-sizing: border-box; }
+.y-kbd button { font: inherit; color: inherit; }
+.y-kbd .y-kbd__key { color: var(--ink); }
+
+.y-kbd__case {
+  position: relative;
+  padding: 2cqw 2.4cqw 2.6cqw;
+  border: 0.35cqw solid var(--line);
+  border-radius: 2.6cqw;
+  background: linear-gradient(180deg, var(--case-hi), var(--case) 18%);
+  box-shadow: 1.1cqw 1.3cqw 0 rgba(17, 16, 20, 0.35), inset 0 0.25cqw 0 rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- top bar: screen · switch · badge · knob ---------- */
+.y-kbd__bar { display: flex; align-items: center; gap: 1.6cqw; margin-bottom: 1.6cqw; }
+.y-kbd__screen {
+  position: relative; flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 0.3cqw;
+  height: 4.6cqw; padding: 0 1.4cqw;
+  border: 0.3cqw solid var(--line); border-radius: 1cqw;
+  background: var(--screen); color: var(--screen-ink);
+  font: 600 1.55cqw/1 var(--y-font-mono, monospace); letter-spacing: 0.04em;
+  text-shadow: 0 0 0.8cqw color-mix(in srgb, var(--screen-ink) 60%, transparent);
+  box-shadow: inset 0 0 1.6cqw rgba(0, 0, 0, 0.6);
+  overflow: hidden; white-space: pre;
+}
+.y-kbd__text { overflow: hidden; min-width: 0; }
+.y-kbd__text:empty::before { content: "type something…"; opacity: 0.45; }
+.y-kbd__caret { flex: none; width: 0.9cqw; height: 2.2cqw; background: currentColor; animation: y-kbd-blink 1s steps(1) infinite; }
+.y-kbd__stats { display: flex; align-items: center; gap: 1cqw; margin-left: auto; padding-left: 1.4cqw; flex: none; opacity: 0.9; }
+.y-kbd__caps { width: 1cqw; height: 1cqw; border-radius: 50%; background: color-mix(in srgb, var(--screen-ink) 25%, transparent); }
+.y-kbd__caps.is-on { background: var(--screen-ink); box-shadow: 0 0 1cqw var(--screen-ink); }
+
+.y-kbd__switch { display: flex; padding: 0.4cqw; border: 0.3cqw solid var(--line); border-radius: 99px; background: rgba(0, 0, 0, 0.35); }
+.y-kbd__switch button {
+  padding: 0.7cqw 1.1cqw; border: 0; border-radius: 99px; background: none; cursor: pointer;
+  font: 700 1.15cqw/1 var(--y-font-mono, monospace); letter-spacing: 0.08em; color: rgba(255, 255, 255, 0.55);
+  transition: background 0.2s, color 0.2s;
+}
+.y-kbd__switch button[aria-checked="true"] { background: var(--mod); color: var(--mod-ink); }
+.y-kbd__switch button:focus-visible, .y-kbd__knob:focus-visible { outline: 0.4cqw solid var(--acc1); outline-offset: 0.3cqw; }
+.y-kbd__badge { font: 800 2cqw/1 var(--y-font-display); letter-spacing: 0.04em; color: var(--mod); }
+.y-kbd__badge small { margin-left: 0.3cqw; font: 700 1.1cqw/1 var(--y-font-mono, monospace); color: var(--acc1); }
+.y-kbd__knob {
+  --turn: 81deg;
+  position: relative; flex: none;
+  width: 5.4cqw; aspect-ratio: 1; border-radius: 50%;
+  border: 0.3cqw solid var(--line);
+  background: repeating-conic-gradient(from 0deg, rgba(0, 0, 0, 0.18) 0 4deg, transparent 4deg 10deg), radial-gradient(circle at 35% 30%, #fff, var(--knob) 45%, color-mix(in srgb, var(--knob) 60%, #000));
+  box-shadow: 0 0.4cqw 0 rgba(0, 0, 0, 0.45);
+  cursor: ns-resize; touch-action: none;
+}
+.y-kbd__knob i { position: absolute; inset: 0; rotate: var(--turn); transition: rotate 0.12s; }
+.y-kbd__knob i::after { content: ""; position: absolute; left: 50%; top: 0.6cqw; width: 0.6cqw; height: 1.4cqw; translate: -50% 0; border-radius: 1cqw; background: var(--acc1); }
+
+/* ---------- plate + keys ---------- */
+.y-kbd__plate {
+  --u: calc((100cqw - 4.8cqw - 0.7cqw) / 16);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(64, 1fr);
+  grid-auto-rows: calc(var(--u) * 0.94);
+  gap: 0.45cqw;
+  padding: 0.6cqw;
+  border-radius: 1.4cqw;
+  background: var(--plate);
+  box-shadow: inset 0 0.4cqw 1cqw rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  isolation: isolate;
+}
+.y-kbd__key {
+  --top: var(--alpha); --ink: var(--alpha-ink);
+  position: relative; z-index: 1;
+  grid-column: span var(--s);
+  padding: 0;
+  border: 0.22cqw solid var(--line);
+  border-radius: 0.9cqw;
+  background: color-mix(in srgb, var(--top) 74%, #000);
+  box-shadow: 0 0.55cqw 0 color-mix(in srgb, var(--top) 45%, #000);
+  color: var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+  translate: 0 -0.3cqw;
+  transition: translate 0.05s, box-shadow 0.05s;
+}
+.y-kbd__key::before { /* sculpted top face */
+  content: ""; position: absolute; inset: 0.25cqw 0.5cqw 0.85cqw;
+  border-radius: 0.7cqw;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--top) 80%, #fff), var(--top) 70%);
+  box-shadow: inset 0 -0.2cqw 0.3cqw rgba(0, 0, 0, 0.1);
+}
+.y-kbd__legend {
+  position: absolute; left: 0.95cqw; top: 0.6cqw; right: 0.6cqw;
+  display: grid; justify-items: start; gap: 0.1cqw;
+  font: 600 1.45cqw/1 var(--y-font-body); text-align: left; white-space: nowrap;
+}
+.y-kbd__legend small { font-size: 1.05cqw; opacity: 0.6; }
+.y-kbd__key--mod { --top: var(--mod); --ink: var(--mod-ink); }
+.y-kbd__key--mod .y-kbd__legend { font-size: 1.15cqw; font-family: var(--y-font-mono, monospace); font-weight: 700; letter-spacing: 0.02em; }
+.y-kbd__key--acc1 { --top: var(--acc1); --ink: var(--acc-ink); }
+.y-kbd__key--acc2 { --top: var(--acc2); --ink: var(--acc-ink); }
+.y-kbd__key--acc1 .y-kbd__legend, .y-kbd__key--acc2 .y-kbd__legend { font: 800 1.25cqw/1 var(--y-font-mono, monospace); }
+.y-kbd__key--space { --top: var(--space); --ink: var(--space-ink); }
+.y-kbd__key.is-down { translate: 0 0.2cqw; box-shadow: 0 0.05cqw 0 color-mix(in srgb, var(--top) 45%, #000); }
+.y-kbd__key.is-down::before { filter: brightness(0.94); }
+.y-kbd.is-shifted [data-label="Shift"]::before { background: var(--acc1); }
+
+.y-kbd__ripple {
+  --h: 280;
+  position: absolute; z-index: 0;
+  width: 60cqw; aspect-ratio: 1; margin: -30cqw 0 0 -30cqw;
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, transparent 38%, hsl(var(--h) 100% 60% / 0.9) 46%, transparent 58%);
+}
+
+/* ---------- themes ---------- */
+/* 🕹 retro: beige office board */
+.y-kbd--retro {
+  --case: #d6cfbf; --case-hi: #ebe5d8; --plate: #a59e8e; --line: #3b3833;
+  --alpha: #ece6d6; --alpha-ink: #3a3833;
+  --mod: #8e8a80; --mod-ink: #f4efe2;
+  --acc1: #d9452b; --acc2: #e8a33d; --acc-ink: #fff8ec;
+  --space: #ece6d6; --space-ink: #3a3833;
+  --screen: #2a1d08; --screen-ink: #ffb340; --knob: #8e8a80;
+}
+.y-kbd--retro .y-kbd__badge { color: #3a3833; }
+.y-kbd--retro .y-kbd__switch button { color: rgba(58, 56, 51, 0.6); }
+.y-kbd--retro .y-kbd__switch button[aria-checked="true"] { color: #f4efe2; }
+/* 🌃 cyber: dark caps, neon legends, rgb ripples */
+.y-kbd--cyber {
+  --case: #0b0b10; --case-hi: #1c1c26; --plate: #050507; --line: #000;
+  --alpha: #1b1b24; --alpha-ink: #00f0ff;
+  --mod: #12121a; --mod-ink: #ff2bd6;
+  --acc1: #00f0ff; --acc2: #ff2bd6; --acc-ink: #050507;
+  --space: #1b1b24; --space-ink: #00f0ff;
+  --screen: #050510; --screen-ink: #00f0ff; --knob: #2a2a36;
+}
+.y-kbd--cyber .y-kbd__legend { text-shadow: 0 0 0.8cqw currentColor; }
+.y-kbd--cyber .y-kbd__key--acc1 .y-kbd__legend, .y-kbd--cyber .y-kbd__key--acc2 .y-kbd__legend { text-shadow: none; }
+.y-kbd--cyber .y-kbd__case::after { /* underglow */
+  content: ""; position: absolute; z-index: -1; inset: 1.2cqw; border-radius: 3cqw;
+  background: conic-gradient(from var(--glow-a, 0deg), #00f0ff, #9b5cff, #ff2bd6, #ffe14d, #00f0ff);
+  filter: blur(2.6cqw); opacity: 0.7;
+  animation: y-kbd-glow 6s linear infinite;
+}
+.y-kbd--cyber .y-kbd__switch button[aria-checked="true"] { background: #ff2bd6; color: #050507; }
+.y-kbd--cyber .y-kbd__badge { color: #00f0ff; }
+/* 🍬 pastel: lilac case, candy caps */
+.y-kbd--pastel {
+  --case: #c4b2ff; --case-hi: #ddd2ff; --plate: #a996f0; --line: #4b3d7a;
+  --alpha: #fdf8ff; --alpha-ink: #6b5a8e;
+  --mod: #ffd1e6; --mod-ink: #8a4b6b;
+  --acc1: #a8f0d4; --acc2: #ffe39a; --acc-ink: #4b3d7a;
+  --space: #a8f0d4; --space-ink: #4b3d7a;
+  --screen: #2d2450; --screen-ink: #ffd1e6; --knob: #fdf8ff;
+}
+.y-kbd--pastel .y-kbd__badge { color: #4b3d7a; }
+.y-kbd--pastel .y-kbd__switch button { color: rgba(75, 61, 122, 0.65); }
+
+@property --glow-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes y-kbd-glow { to { --glow-a: 360deg; } }
+@keyframes y-kbd-blink { 50% { opacity: 0; } }
+
+/* ---------- typing test ---------- */
+.y-kbd-test {
+  display: grid; gap: 12px;
+  padding: 18px 20px; margin-bottom: 18px;
+  border: var(--y-border, 2.5px solid #111014); border-radius: var(--y-radius, 16px);
+  background: var(--y-white, #fff); box-shadow: var(--y-shadow, 5px 5px 0 #111014);
+}
+.y-kbd-test__line { font: 500 clamp(1rem, 2.4vw, 1.45rem)/1.5 var(--y-font-mono, monospace); color: rgba(17, 16, 20, 0.35); word-break: break-word; }
+.y-kbd-test__line span { display: inline-block; border-radius: 4px; transition: color 0.1s, background 0.1s; }
+.y-kbd-test__line .is-ok { color: var(--y-ink, #111014); }
+.y-kbd-test__line .is-bad { color: #fff; background: var(--y-pink, #ff4fd8); }
+.y-kbd-test__line .is-next { box-shadow: inset 0 -3px 0 var(--y-blue, #3d5afe); color: var(--y-ink, #111014); animation: y-kbd-blink 1s steps(1) infinite; }
+.y-kbd-test__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
+.y-kbd-test__stat { font: 800 1.4rem/1 var(--y-font-display); }
+.y-kbd-test__stat small { font: 700 0.68rem var(--y-font-mono, monospace); letter-spacing: 0.12em; color: var(--y-muted, #6b6672); }
+.y-kbd-test__bar [data-restart] { margin-left: auto; }
+.y-kbd-test.is-done { background: var(--y-lime, #c6ff3d); }
+.y-kbd-test.is-done .y-kbd-test__stat[data-wpm] { animation: y-kbd-pop 0.6s var(--y-ease-bounce, ease); }
+@keyframes y-kbd-pop { 40% { scale: 1.35; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .y-kbd *, .y-kbd *::before, .y-kbd *::after { animation: none !important; transition: none !important; }
+}

@@ -972,6 +972,62 @@ document.querySelector("#order").innerHTML = yeet.receiptHTML(receipt);` }],
       ["yeet.receiptHTML(data)", "js", "Builds receipt markup from { no, store, items, subtotal, tax, total, date, ... }."],
     ],
   },
+  {
+    id: "keyboard", name: "Keyboard", emoji: "⌨️", category: "Widgets", tile: "wide", color: "purple",
+    desc: "A 65% mechanical keyboard that mirrors your real one: every key you press goes down on screen with a synthesized switch sound (thock, clicky or creamy). Tap the caps to type on touch screens, spin the knob for volume, and watch your WPM on the little display. Comes in four themes and works as an on-screen keyboard for any input, or as a typing test.",
+    mini: `<div class="y-kbd" data-kbd style="--w:300px"></div>`,
+    groups: [
+      { label: "Board", hint: "type on your keyboard · click the caps · drag / scroll the knob", layout: "block", html: `
+<div class="y-kbd" data-kbd></div>` },
+      { label: "Themes", hint: "data-theme = retro · cyber (rgb ripples + underglow) · pastel", layout: "block", html: `
+<div style="display:grid;grid-template-columns:minmax(0,1fr);gap:2.2rem;justify-items:center">
+  <div class="y-kbd" data-kbd data-theme="retro" data-brand="office" data-sound="clicky" style="--w:640px"></div>
+  <div class="y-kbd" data-kbd data-theme="cyber" data-brand="n30n" style="--w:640px"></div>
+  <div class="y-kbd" data-kbd data-theme="pastel" data-brand="mochi" data-sound="creamy" style="--w:640px"></div>
+</div>` },
+      { label: "Use case · typing test", hint: "start typing the line · ↻ for a new one", layout: "block", html: `
+<div style="max-width:760px;margin-inline:auto">
+  <div class="y-kbd-test" data-kbd-test="#testKbd"></div>
+  <div class="y-kbd" id="testKbd" data-kbd data-theme="cyber" data-brand="speed"></div>
+</div>` },
+      { label: "Use case · on-screen keyboard", hint: "tap the caps to type into the field (kiosks, touch screens, password-free search)", layout: "block", html: `
+<div style="max-width:760px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:1rem">
+  <label class="y-field"><span class="y-label">Search the drop</span>
+    <input class="y-input" id="kbdField" placeholder="tap the keys below…" autocomplete="off" />
+  </label>
+  <div class="y-kbd" data-kbd data-target="#kbdField" data-theme="pastel" data-sound="creamy"></div>
+</div>` },
+    ],
+    extraCode: [{ lang: "js", label: "control it from JS", src: `
+const board = yeet.kbd(document.querySelector("[data-kbd]"));
+board.setProfile("clicky");   // "thock" | "clicky" | "creamy"
+board.setVolume(0.5);         // 0 – 1 (the knob does this too)
+board.press("KeyA");          // press a key by its KeyboardEvent.code
+board.text;                   // what's on the little display
+
+board.el.addEventListener("kbd:type", (e) => {
+  console.log(e.detail);      // { char: "a" } · { back: true } · { enter: true }
+});
+
+// typing test results
+document.querySelector("[data-kbd-test]").addEventListener("kbd:result", (e) => {
+  console.log(e.detail);      // { wpm, accuracy, seconds }
+});` }],
+    api: [
+      ["[data-kbd]", "attribute", "Root (.y-kbd). Leave it empty: yeet.init() builds the case, display, sound switch, knob and 68 keys."],
+      ["--w", "css var", "Board width (default 760px). Everything scales with it."],
+      ["data-theme", "attribute", "retro (beige office), cyber (neon legends, RGB ripples, underglow), pastel (lilac candy). Default: yeet."],
+      ["data-sound", "attribute", "Starting switch sound: thock (default), clicky, creamy. Also switchable on the board."],
+      ["data-volume", "attribute", "Starting volume 0 – 1 (default 0.8). The knob: drag up/down, scroll, or arrow keys."],
+      ["data-target=\"#input\"", "attribute", "Tapped keys type into that input / textarea (Shift is one-shot, Enter submits the form)."],
+      ["data-rgb", "attribute", "RGB ripple on every press (on by default in cyber)."],
+      ["data-brand", "attribute", "Badge text on the case."],
+      ["kbd:type", "event", "Every typed character: { char } or { back: true } or { enter: true }."],
+      ["[data-kbd-test=\"#board\"]", "attribute", "Typing test linked to a board: live WPM, accuracy, time; green when done. data-text sets your own line. Fires kbd:result."],
+      ["--alpha / --mod / --acc1 / --acc2 / --space", "css var", "Keycap colors (and --alpha-ink, --mod-ink …) to make your own colorway."],
+      ["yeet.kbd(el)", "js", "Returns { press, setProfile, setVolume, profile, volume, text, clear, destroy }."],
+    ],
+  },
 ];
 
 export const colors = ["ink", "paper", "white", "lime", "pink", "blue", "orange", "purple", "yellow", "mint", "muted"];

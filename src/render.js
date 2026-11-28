@@ -1,10 +1,14 @@
 /* Renders registry entries into bento tiles and full doc sections. */
 import { $, $$, h, esc, dedent, hlHTML, hlJS, copy, catColor, kindColor, gsap, ScrollTrigger, reduced, components } from "./shell.js";
 
+/* the showpieces featured in the home "headliners" section */
+export const HIGHLIGHTS = ["keyboard", "filebox", "receipt-machine", "recorder", "clocks", "widget-board"];
+
 /* ---------- bento tile ---------- */
 export function tile(c, { href = `/docs.html#${c.id}`, sizes = true } = {}) {
   return h(`
     <a class="tile ${sizes && c.tile ? `tile--${c.tile}` : ""}" href="${href}" data-id="${c.id}" data-cat="${c.category}" style="--tile:var(--y-${c.color})">
+      ${HIGHLIGHTS.includes(c.id) ? `<span class="tile__hot" aria-label="Highlight">HOT ✦</span>` : ""}
       <div class="tile__preview" inert>${c.mini}</div>
       <div class="tile__foot">
         <span class="tile__emoji">${c.emoji}</span><span class="tile__name">${c.name}</span>

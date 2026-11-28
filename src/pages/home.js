@@ -1,4 +1,4 @@
-import { $, $$, gsap, Flip, ScrollTrigger, reduced, splitChars, initShell, components, colors } from "../shell.js";
+import { $, $$, gsap, Flip, ScrollTrigger, reduced, splitChars, initShell, components, colors, yeet } from "../shell.js";
 import { tile, tileHover } from "../render.js";
 
 /* ---------- previews ---------- */
@@ -43,6 +43,60 @@ function typeTerm() {
   });
   typing = tl;
 }
+
+/* ---------- highlights: the showpiece components, live ---------- */
+const folders = [
+  ["Doc-01", "Illustration", "12 pieces", "var(--y-orange)"],
+  ["Doc-02", "Graphic Design", "posters + type", "var(--y-pink)"],
+  ["Doc-03", "UI / UX", "apps + sites", "var(--y-blue)"],
+  ["Doc-04", "Motion", "gsap studies", "#8ecbff"],
+].map(([doc, label, note, color]) => yeet.folderHTML({ doc, label, note, color, content: `<h3>${label}</h3><p>Your work goes here. Swap this for real projects.</p>` })).join("");
+const HIGHLIGHTS = [
+  { id: "keyboard", cls: "hl--kbd", c: "var(--y-yellow)", tag: "just start typing", html: `<div class="y-kbd" data-kbd style="--w:100%"></div>` },
+  { id: "receipt-machine", cls: "hl--pos", c: "var(--y-orange)", tag: "tap PAY", html: `
+    <div class="hl__chips">
+      <button class="y-chip" data-manual data-pos-add="#hlPos" data-name="Iced Oat Latte" data-price="6.25">🧋 $6.25</button>
+      <button class="y-chip" data-manual data-pos-add="#hlPos" data-name="Bucket Hat" data-price="22">🧢 $22</button>
+      <button class="y-chip" data-manual data-pos-add="#hlPos" data-name="Chunky Sneakers" data-price="120">👟 $120</button>
+    </div>
+    <div class="y-pos" id="hlPos" data-pos data-auto-tear="0" style="--w:250px"></div>` },
+  { id: "recorder", cls: "hl--rec", c: "var(--y-blue)", tag: "● rec", html: `<div class="y-rec" data-recorder style="--w:220px"></div>` },
+  { id: "filebox", cls: "hl--box", c: "var(--y-pink)", tag: "tap a folder", html: `
+    <div class="y-filebox" data-filebox data-cat data-sound style="width:min(100%,270px)">
+      <div class="y-filebox__back"></div>
+      <div class="y-filebox__stack">${folders}</div>
+      <div class="y-filebox__front"><span class="y-filebox__handle"></span><span class="y-filebox__note">Portfolio</span>
+        <div class="y-filebox__meta"><span class="y-filebox__count">04 / 12</span><span class="y-filebox__slots"></span></div></div>
+      <span class="y-filebox__live" aria-live="polite"></span>
+    </div>` },
+  { id: "clocks", cls: "hl--clk", c: "var(--y-mint)", tag: "live in 3 cities", html: `
+    <div class="y-wgt" style="--u:64px"><div class="y-cell y-cell--big"><div class="y-aclock" data-tz="Europe/Amsterdam" data-label="Amsterdam" data-numbers data-date></div></div></div>
+    <div class="y-wgt" style="--u:64px">
+      <div class="y-cell y-cell--w2 y-cell--white y-wclock" data-tz="America/New_York" data-code="NYC"></div>
+      <div class="y-cell y-cell--w2 y-cell--red y-wclock" data-tz="Asia/Tokyo" data-code="TYO" data-hand="ink"></div>
+    </div>` },
+  { id: "widget-board", cls: "hl--wgt", c: "var(--y-ink)", tag: "home-screen vibes", html: `
+    <div class="y-wgt y-wgt--wide" style="--u:62px">
+      <div class="y-cell y-cell--big y-cell--sky"><div class="y-wx__sky"><i class="y-wi" data-wi="partly"></i>Few clouds</div><div class="y-wx__temp">28<sup>°</sup></div><div class="y-wx__city">New York City</div></div>
+      <div class="y-cell y-cell--orange y-dday" data-tz="America/New_York"></div>
+      <div class="y-cell y-sun"><i class="y-wi" data-wi="sunset"></i><span class="y-sun__t">22:04</span></div>
+      <div class="y-cell y-cell--w2 y-cell--blue y-stat" data-count="10139"></div>
+    </div>` },
+];
+const hlGrid = $("#hlGrid");
+HIGHLIGHTS.forEach((hl, i) => {
+  const c = components.find((x) => x.id === hl.id);
+  hlGrid.insertAdjacentHTML("beforeend", `
+    <article class="hl ${hl.cls}" style="--hl:${hl.c}">
+      <header class="hl__top">
+        <span class="hl__num">${String(i + 1).padStart(2, "0")}</span>
+        <b class="hl__name">${c.emoji} ${c.name}</b>
+        <span class="hl__tag">${hl.tag}</span>
+        <a class="hl__go" href="/docs.html#${c.id}" aria-label="${c.name} docs">docs ↗</a>
+      </header>
+      <div class="hl__stage">${hl.html}</div>
+    </article>`);
+});
 
 /* ---------- reel ---------- */
 const track = $("#reelTrack");
@@ -106,6 +160,9 @@ if (!reduced) {
       ease: "none",
     }, 0)
     .to(".hero__title", { scale: 0.85, opacity: 0.2, y: -60, ease: "none" }, 0);
+
+  /* highlights: rise in with a little tilt */
+  gsap.from(".hl", { y: 80, rotate: (i) => (i % 2 ? 1.5 : -1.5), opacity: 0, stagger: 0.1, duration: 0.9, ease: "back.out(1.4)", clearProps: "transform,opacity", scrollTrigger: { trigger: ".hlgrid", start: "top 80%", once: true } });
 
   /* previews: rise in + per-card hover life */
   gsap.from(".pv", { y: 90, rotate: (i) => (i % 2 ? 2 : -2), opacity: 0, stagger: 0.12, duration: 1, ease: "back.out(1.4)", clearProps: "transform,opacity", scrollTrigger: { trigger: ".pvgrid", start: "top 80%", once: true } });

@@ -130,6 +130,37 @@ const voices = {
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
     n.connect(f).connect(g).connect(master);
   },
+  // mechanical key switch: profile thock | clicky | creamy, big = spacebar/enter, up = release
+  key(t, { profile = "thock", big = false, up = false, vol = 1 } = {}) {
+    const P = {
+      thock:  { f: 480,  q: 1.3, tone: 165,  dur: 0.075, nv: 0.6,  tv: 0.32 },
+      clicky: { f: 3600, q: 2.4, tone: 2300, dur: 0.032, nv: 0.42, tv: 0.1 },
+      creamy: { f: 1250, q: 0.9, tone: 300,  dur: 0.055, nv: 0.45, tv: 0.18 },
+    }[profile] || {};
+    if (!P.f || vol <= 0) return;
+    const r = 0.9 + Math.random() * 0.2, k = (up ? 0.4 : 1) * vol * (big ? 1.15 : 1);
+    const n = noise(t, P.dur), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    f.type = "bandpass"; f.Q.value = P.q;
+    f.frequency.value = P.f * r * (big ? 0.7 : 1) * (up ? 1.3 : 1);
+    env(g, t, P.nv * k, 0.002, P.dur);
+    n.connect(f).connect(g).connect(master);
+    const o = osc("triangle", t, P.dur), g2 = ctx.createGain();
+    o.frequency.value = P.tone * r * (big ? 0.8 : 1) * (up ? 1.2 : 1);
+    env(g2, t, P.tv * k, 0.002, P.dur * 0.8);
+    o.connect(g2).connect(master);
+    if (profile === "clicky" && !up) { // the click jacket snapping
+      const c = noise(t + 0.011, 0.012), hf = ctx.createBiquadFilter(), g3 = ctx.createGain();
+      hf.type = "highpass"; hf.frequency.value = 5200;
+      env(g3, t + 0.011, 0.5 * vol, 0.001, 0.012);
+      c.connect(hf).connect(g3).connect(master);
+    }
+    if (big && !up) { // stabilizer rattle
+      const s = noise(t + 0.02, 0.03), bf = ctx.createBiquadFilter(), g4 = ctx.createGain();
+      bf.type = "bandpass"; bf.frequency.value = 900; bf.Q.value = 3;
+      env(g4, t + 0.02, 0.18 * vol, 0.002, 0.03);
+      s.connect(bf).connect(g4).connect(master);
+    }
+  },
   // tiny UI tick
   tick(t) {
     const o = osc("triangle", t, 0.05), g = ctx.createGain();

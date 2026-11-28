@@ -237,3 +237,13 @@ code { font: 600 .88em var(--y-font-mono); background: rgba(17,16,20,.07); paddi
   .prop { --k: .42; opacity: .75; }
   .prop:nth-of-type(4), .prop:nth-of-type(6), .prop:nth-of-type(7), .prop:nth-of-type(8) { display: none; }
 }
+.tile__hot {
+  position: absolute; z-index: 3; top: .8rem; right: .8rem;
+  padding: .3rem .6rem; border: 2px solid var(--y-ink); border-radius: 99px;
+  background: var(--y-pink); color: var(--y-ink);
+  font: 800 .7rem/1 var(--y-font-mono); letter-spacing: .08em;
+  rotate: 6deg; box-shadow: 2px 2px 0 var(--y-ink);
+  animation: tile-hot 2.4s ease-in-out infinite;
+}
+@keyframes tile-hot { 50% { rotate: -4deg; scale: 1.08; } }
+@media (prefers-reduced-motion: reduce) { .tile__hot { animation: none; } }
